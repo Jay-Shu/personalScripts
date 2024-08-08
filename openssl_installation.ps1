@@ -2,7 +2,7 @@
     Name of Script: openssl_installation.ps1
     Author: Jacob Shuster
     Role: Consultant - 1099
-    Umbrella Company: McGee ECM Solutions, LLC.
+    Umbrella Company: N/A
     Creation Date: 2024-03-20
     Script Cost: 6 hours
     Rate: 100.00 (Based on 2019*)
@@ -25,6 +25,7 @@
 		2024-07-14: Added in Legacy options for Windows Server 2012 and older versions. This is an issue with OpenSSL 3.x
 			and not OpenSSL 1.x. Specifically "-keypbe PBE-SHA1-3DES -certpbe PBE-SHA1-3DES"
 		2024-07-14: Added in logic for running with or without legacy options in OpenSSL.
+        2024-08-07: Removed previous default comments.
 
     TO DO:
         N/A - No current modification requests pending.
