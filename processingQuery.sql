@@ -69,6 +69,7 @@
             COMMIT the TRANSACTION following the Statement(s) execution(s). This is
             to avoid erroneously leaving your cursor open.
         STRING_SPLIT() - No longer being considered.
+        This script is intended to be expanded upon going forward.
 
   	BEST PRACTICES OF STORED PROCEDURES:
     	Use the SET NOCOUNT ON statement as the first statement in the body of the procedure. That is, place it just after the AS keyword. This turns off messages that SQL Server sends back to the client after any SELECT, INSERT, UPDATE, MERGE, and DELETE statements are executed. This keeps the output generated to a minimum for clarity. There is no measurable performance benefit however on today's hardware. For information, see SET NOCOUNT (Transact-SQL).
@@ -119,14 +120,41 @@ INSERT INTO #tempTable VALUES (N'Bob' + CHAR(10),N'Vopni');
 INSERT INTO #tempTable VALUES (N'Mitch',N'Bossi');
 INSERT INTO #tempTable VALUES (N'Neil',N'Peart' + CHAR(32));
 
+INSERT INTO #processingTable
+SELECT 0,
+N'UPDATE #tempTable SET LAST_NAME= ' + '''' + REPLACE(LAST_NAME,CHAR(2),'') + ''''+ N' WHERE PERSON_ID = '+ PERSON_ID,
+LAST_NAME,
+NULL
+FROM #tempTable
+WHERE LAST_NAME like N'%' + CHAR(2) + N'%'
+
+
 SET @rowcount = (
 	SELECT COUNT(ID)
-	FROM #tempTable
-	WHERE LAST_NAME like N'%' + CHAR(2) + N'%');
+	FROM #processingTable);
 
-WHILE (@rowcount <= @counter)
+WHILE (@rowcount >= @counter)
 BEGIN
-SELECT TOP 1 LAST_NAME
-FROM #tempTable
-WHERE LAST_NAME like N'%' + CHAR(2) + N'%';
+BEGIN TRY
+	EXECUTE sp_executesql @SQL
+	UPDATE #processingTable
+	SET SUCCESS_FLAG = 1,
+	RESULTS = N'Success'
+	WHERE ID = @counter
+END TRY
+BEGIN CATCH
+DECLARE @errMessage NVARCHAR(MAX) = (SELECT ERROR_MESSAGE())
+UPDATE #processingTable
+SET SUCCESS_FLAG = 0,
+RESULTS = @errMessage
+
+END CATCH
+SET @counter += 1
 END
+
+
+SELECT * FROM #tempTable
+SELECT * FROM #processingTable
+
+DROP TABLE #tempTable
+DROP TABLE #processingTable
