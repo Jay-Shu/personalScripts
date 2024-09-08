@@ -1,40 +1,23 @@
 /**
-	Name of Script: paca-update-statements.sql
+	Name of Script: processingQuery.sql
     Author: Jacob Shuster
     Role: Consultant - 1099
     Umbrella Company: N/A
-    Creation Date: 2024-08-04
+    Creation Date: 2024-09-05
     Script Cost: N/A
     Rate: 100.00 (Based on 2019*)
 
     Changelog:
-        2024-08-02: Staging for Certificates to be added to Stored Procedures
-          per best practices.
-        2024-08-05: Removed USE Clause.
-        2024-08-05: Resolve Syntax errors.
-        2024-08-05: Addeed BEGIN...END Transaction (T-SQL) blocks.
-        2024-08-05: IF...ELSE (T-SQL), replaced the USE Clauses.
-        2024-08-06: Added Homes Update Statements.
-        2024-08-06: Removed Default set of Citations that were not applicable.
-        2024-08-06: Added missing Schema for any applicable Stored Procedures.
-        2024-08-09: Added AND VEHICLE_VIN = @vehicleVin line for the WHERE clause of the
-            Vehicle Update Stored Procedure.
-        2024-08-11: Re-design of updateAccount_v1.
-		2024-08-14: Full replacement of updateAccounts_v1.
-		2024-08-15: Added an additional DECLARE to separate the Inputs from the already existing values.
-		2024-08-15: Resolved repetitive logic causing double SET.
-		2024-08-16: Updated Variable notes.
-		2024-08-16: Added new shell for updateHomes_v1. All future update stored procedures will utilize
-			this shell.
-		2024-08-18: Shell applied to updateVehicles_v1.
+        2024-09-06: Additional In-Memory tables for an example.
+		2024-09-07: Full inclusion of CHAR(2), CHAR(3), CHAR(9), CHAR(10), and CHAR(32) for REPLACE().
+		2024-09-07: Additional block added as part of the previous line.
+		2024-09-07: Updated variables within Comments.
 		
     TO DO (Requested):
 		N/A - No current modification requests pending.
 	
 	TO DO (SELF):
-		Policies Enumerations. - DONE
-		Bundle Enumeration for Car and Home. For non-goal. - DONE
-        Incorporation of the STRING_SPLIT() function. This was introduced in MS SQL Server 2016,
+		Include Additional Examples, and will be using test data only.
             
 		
     DISCLAIMER:
@@ -51,7 +34,6 @@
 		EXECUTING PROPERLY.
 
     Scalar Variables:
-        @sqlQuery:
 		@successFlag: Set to 1 for Success, 0 for Failure.
 		@origData: What was originally in the given column.
 		@myResults: Our Results
@@ -63,9 +45,11 @@
 		@firstName: First Name of the Person.
 		@personID: Unique Identifier for a given Person, this is to give uniqueness to prevent Updates hitting
 			unintended targets.
-		@SQL: Our actual Query
-		@SQL2: Our actual Query2
+		@SQL: Our actual Query.
+		@SQL2: Our actual Query2.
 		@val: This is a temporary value using a Unique Identifier. It is a placeholder.
+		#tempTable: Temporary table for holding our people.
+		#processingTable: Table used for processing our changes.
 
 
 		
@@ -95,7 +79,6 @@
             for the application to be running these statements. You MUST immediately
             COMMIT the TRANSACTION following the Statement(s) execution(s). This is
             to avoid erroneously leaving your cursor open.
-        STRING_SPLIT() - No longer being considered.
 
   	BEST PRACTICES OF STORED PROCEDURES:
     	Use the SET NOCOUNT ON statement as the first statement in the body of the procedure. That is, place it just after the AS keyword. This turns off messages that SQL Server sends back to the client after any SELECT, INSERT, UPDATE, MERGE, and DELETE statements are executed. This keeps the output generated to a minimum for clarity. There is no measurable performance benefit however on today's hardware. For information, see SET NOCOUNT (Transact-SQL).
