@@ -199,7 +199,7 @@ TRUNCATE TABLE #processingTable
 
 INSERT INTO #processingTable
 SELECT 0,
-N'UPDATE #tempTable SET LAST_NAME= ' + '''' + REPLACE(REPLACE(FIRST_NAME,CHAR(9),N''),CHAR(32),N'') + ''''+ N' WHERE PERSON_ID = '+ '''' + PERSON_ID + '''',
+N'UPDATE #tempTable SET LAST_NAME= ' + '''' + REPLACE(REPLACE(LAST_NAME,CHAR(9),N''),CHAR(32),N'') + ''''+ N' WHERE PERSON_ID = '+ '''' + PERSON_ID + '''',
 LAST_NAME,
 NULL
 FROM #tempTable
