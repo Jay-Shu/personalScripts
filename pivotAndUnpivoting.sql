@@ -225,7 +225,6 @@ CREATE TABLE #labelTable
 
 /*
 	INSERT INTO #labelTable VALUES (N'',1970,N'',NULL);
-
 */
 
 CREATE TABLE #bandTable
@@ -237,6 +236,18 @@ CREATE TABLE #bandTable
 	BAND_LOGO_DESCRIPTION NVARCHAR(MAX)
 );
 
+/*
+	INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+*/
 
 GO
 
@@ -1387,5 +1398,1089 @@ INSERT INTO #labelTable VALUES (N'Orange Label',1970,N'Thorin Oakenshield',NULL)
 INSERT INTO #labelTable VALUES (N'Magenta Label',1970,N'Tom Bombadil',NULL);
 INSERT INTO #labelTable VALUES (N'Turquoise Label',1970,N'Treebeard of Ents',NULL);
 INSERT INTO #labelTable VALUES (N'Cyan Label',1970,N'Ungoliant of Shelob',NULL);
+
+GO
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Pink Floyd',1,N'[
+		{
+			"Band_Name":"Pink Floyd"
+			"Band_Members":[
+				{
+					"Singer Name":"Roger Waters",
+					"Drummer":"Nick Mason",
+					"Keyboard":"Richard Wright",
+					"Bass":"David Gilmour",
+					"Guitar":"Syd Barrett"
+				}
+				]
+			}
+		]', N'Light through a Prism emitting a rainbow with their name in white letters, Pink on the top and Floyd on the bottom')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
+
+INSERT INTO #bandTable VALUES (N'Jimi Hendrix',1,N'[
+		{
+			"Band_Name":"Jimi Hendrix"
+			"Band_Members":[
+				{
+					"Singer Name":"Jimi Hendrix"
+				}
+				]
+			}
+		]', N'Jimi Hendrix''s name in Hendrix Groove Font')
 
 GO
