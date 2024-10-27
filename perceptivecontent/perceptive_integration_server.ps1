@@ -7,16 +7,65 @@
                         first before taking additional steps. Then immediately disconnect the session following
 
                     .EXAMPLE
-                    intool --cmd promote-perceptive-manager --username myusername --login-name currentperceptivemanager --login-password currentperceptivemanagerpassword
-                    intool --cmd demote-perceptive-manager --username myusername --login-name currentperceptivemanager --login-password currentperceptivemanagerpassword
+                    This example demonstrates pseudo-code of the calls. Effectively; Establish Connection, Retrieve views,
+                        Retrieve results from a specific view, Disconnect Connection.
+                        
+                        Establish a Connection
+                        Grab the objects
+                        Grab a specific Object
+                        Disconnect the Connection
+
+                    Individual examples:
+                        Invoke-WebRequest -Uri "https://apachetomcat:port/integrationserver/v1/connection" -Method "GET" -Headers {"X-IntegrationServer-Username"="deptmanager";"X-IntegrationServer-Password"="deptmanagerpassword";"Accept"="application/xml"} -SkipCertificateCheck
+                        Invoke-WebRequest -Uri "https://apachetomcat:port/integrationserver/v1/view" -Method "GET" -Headers {""X-IntegrationServer-Session-Hash"="GUID";"Accept"="application/xml"} -SkipCertificateCheck
+                        Invoke-WebRequest -Uri "https://apachetomcat:port/integrationserver/v1/view/{id}" -Method "GET" -Headers {""X-IntegrationServer-Session-Hash"="GUID";"Accept"="application/xml"} -SkipCertificateCheck
+                        Invoke-WebRequest -Uri "https://apachetomcat:port/integrationserver/v1/connection" -Headers {"X-IntegrationServer-Session-Hash"="GUID";"Accept"="application/xml"} -Method "DELETE" -SkipCertificateCheck
 
                     .NOTES
-                    This script is inclusive to Promote and Demote. Not intended for other uses.
+                    This script isn't meant to be over the top. However, can demonstrate the expected behavior of working with Integration Server. For a Developer
+                        this is crucial for a successful and stable integration. Additionally, 
 
                     .INPUTS
+                    globalVars: Hashtable for storing our globally accessible variables.
                     baseUri: Base URL where Integration Server is installed at. Include the end slash.
-                    password: Password of the username performing the promoting and demoting. This must be a current Perceptive Manager.
-                    inserverBin64: 
+                    documents: Password of the username performing the promoting and demoting. This must be a current Perceptive Manager.
+                    views: View URI Fragment.
+                    drawers: Drawer URI Fragment.
+                    workflowItems: Workflow URI Fragment.
+                    serverStatus: Server Status URI Fragment. This will return the Status of the Inserver.
+                        INSERVER_UP is what we expect to be returned.
+                    serverInfo: Server Info URI Fragment. This will not return the Status of the Inserver and will not indicate
+                        whether it is in a functioning state or not.
+                    xIntegrationServerUsername: X-IntegrationServer-Username, this must be a header.
+                    xIntegrationServerPassword: X-IntegrationServer-Password, this must be a header.
+                    connection: Connection URI Fragment.
+                    v1: Version 1 API Calls. If you do not specify a version in the URI, it will default to V1.
+                        The lax method is to not include v1 in any uri that you intend for only Version 1
+                        usage. Recommended best practice is to always include the version.
+                    v2: Version 2 API Calls.
+                    v3: Version 3 API Calls.
+                    v4: Version 4 API Calls.
+                    v5: Version 5 API Calls.
+                    v6: Version 6 API Calls.
+                    v7: Version 7 API Calls.
+                    v8: Version 8 API Calls.
+                    v9: Version 9 API Calls.
+                    v10: Version 10 API Calls.
+                    v11: Version 11 API Calls.
+                    interactive: Staged for future development.
+                    headers: These are the headers we will be using X-IntegrationServer-UserName, X-IntegrationServer-Password, X-IntegrationServer-Session-Hash,
+                        Accept, Content-Type, X-IntegrationServer-Resource-Name (filename of the page).
+                    request: Our initial connection for establishing a session. This needs to result in an X-IntegrationServer-Session-Sash.
+
+                Citations:
+                    Invoke-WebRequest, https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-7.4
+                    What is Integration Server?, https://docs.hyland.com/Developer/IS/en_US/7.11/index.html
+                    Request Headers, https://docs.hyland.com/Developer/IS/en_US/7.11/requestheaders.html
+                    Licensing, https://docs.hyland.com/Developer/IS/en_US/7.11/licensing.html
+                    /v1/status, https://docs.hyland.com/Developer/IS/en_US/7.11/operations.html#call_ServiceStatus_V1_GET-status
+                    about_Comparison_Operators, https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comparison_operators?view=powershell-7.4
+                    /v1/drawer, https://docs.hyland.com/Developer/IS/en_US/7.11/operations.html#call_Drawer_V1_GET-drawer
+                    /v1/drawer/{id}, https://docs.hyland.com/Developer/IS/en_US/7.11/operations.html#call_Drawer_V1_GET-drawer-id
                     #>
     #param (
     #
@@ -180,15 +229,75 @@ serverStatus
                 } else {
                     [xml]$specificXml = $runView.Content
                     
+                    Write-Host "An XML will be returned of the view being ran."
                     Write-Host "Our View Returned the Following Content."
                     Write-Host $specificXml
                 }
             }
-        
         }
 
     } elseif($action -eq "drawers"){
-    
+        Write-Host "We are going to perform a view retrieval and run"
+        Write-Host "Our expected output will be an xml. Effectively, the Response Body."
+        
+        $drawerHeaders = @{
+            "Accept" = "application/xml";
+            "X-IntegrationServer-Session-Hash" = $xIntegrationServerSessionHash;
+        }
+
+        $drawerUri = "$($globalVars.baseUri)/$($globalVars.v1)/$($globalVars.drawers)"
+        $getDrawers = Invoke-WebRequest -Uri $drawerUri -Method "GET" -Headers @drawerHeaders -SkipCertificateCheck
+        $drawersResponse = $getDrawers.GetResponse()
+        $drawersStatusCode = $getDrawers.StatusCode
+
+        if($drawersStatusCode -ne 200){
+            Write-Host "We are expecting an HTTP Status code of 200."
+            break
+        } else 
+        {
+            # Validation of our header is necessary. That has to come after the Status code is checked.
+            $drawerISSH = $request.Headers["X-IntegrationServer-Session-Hash"]
+            if($drawerISSH -ne $xIntegrationServerSessionHash) {
+                Write-Host "Something has changed and your X-IntegrationServer-Session-Hash is no longer valid or has updated."
+                break
+            } else {
+                Write-Host "Successfully validated the X-IntegrationServer-Session-Hash Header against the Response."
+                [xml]$xml = $getDrawers.Content
+                $drawersReturned = $xml.drawers.drawer
+
+                $drawerIds = @()
+                foreach ($drawer in $drawersReturned){
+                    $drawerIdVal = $drawer.name
+                    $drawerIds += $drawerIdVal
+                }
+                Write-Host "Choose one of the following View Ids to Copy and use."
+                Write-Host $drawerIds
+                
+                $drawerSpecificHeaders = @{
+                    "Accept" = "application/xml";
+                    "X-IntegrationServer-Session-Hash" = $xIntegrationServerSessionHash;
+                }
+        
+
+                $drawerIdSpecific = Read-Host "Provide the View Id:"
+                $drawerSpecificUri = "$($globalVars.baseUri)/$($globalVars.v1)/$($globalVars.drawers)/$($drawerIdSpecific)"
+                $getDrawer = Invoke-WebRequest -Uri $drawerSpecificUri -Method "GET" -Headers @drawerSpecificHeaders -SkipCertificateCheck
+                
+                $drawerSpecificResponse = $getDrawer.GetResponse()
+                $drawerSpecificStatusCode = $getDrawer.StatusCode
+
+                if($drawerSpecificStatusCode -ne 200) {
+                    Write-Host "We are expecting to return an HTTP Status code of 200."
+                } else {
+                    [xml]$specificXml = $getDrawer.Content
+                    
+                    Write-Host "An XML will be returned of the view being ran."
+                    Write-Host "Our View Returned the Following Content."
+                    Write-Host $specificXml
+                }
+            }
+        }
+
     } elseif($action -eq "workflowItems"){
     
     } elseif($action -eq "serverStatus") {
@@ -202,4 +311,4 @@ $disconnectHeaders = @{
     "X-IntegrationServer-Session-Hash"= $xIntegrationServerSessionHash;
 }
 
-Invoke-WebRequest -Uri "$($baseUri)/$($globalVars.v1)/$($globalVars.connection)" -Headers $disconnectHeaders -SkipCertificateCheck
+Invoke-WebRequest -Uri "$($baseUri)/$($globalVars.v1)/$($globalVars.connection)" -Headers $disconnectHeaders -Method "DELETE" -SkipCertificateCheck
