@@ -26,7 +26,7 @@ $globalVars = @{
     username = "perceptivemanger";
     password = "password";
     inserverBin64 = "E:\inserver\bin64";
-    inserverBin64Old = "E:\inserver6\bin64"
+    inserverBin64Old = "E:\inserver6\bin64";
 }
 
 
