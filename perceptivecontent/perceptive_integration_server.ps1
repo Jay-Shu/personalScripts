@@ -5,6 +5,9 @@
                     .DESCRIPTION
                     This script is intended for working with Integration Server in various capacities. We need to establish a session
                         first before taking additional steps. Then immediately disconnect the session following
+                    
+                    Changelog:
+                        2024-10-29: Added remaining logic for all actions.
 
                     .EXAMPLE
                     This example demonstrates pseudo-code of the calls. Effectively; Establish Connection, Retrieve views,
@@ -24,6 +27,8 @@
                     .NOTES
                     This script isn't meant to be over the top. However, can demonstrate the expected behavior of working with Integration Server. For a Developer
                         this is crucial for a successful and stable integration. Additionally, 
+                    RESTful is expected to be faster than SOAP. This has been verified.
+                    Configuration files within Perceptive Content must be in UTF-8-BOM.
 
                     .INPUTS
                     globalVars: Hashtable for storing our globally accessible variables.
@@ -32,7 +37,7 @@
                     views: View URI Fragment.
                     drawers: Drawer URI Fragment.
                     workflowItems: Workflow URI Fragment.
-                    serverStatus: Server Status URI Fragment. This will return the Status of the Inserver.
+                    serviceStatus: Server Status URI Fragment. This will return the Status of the Inserver.
                         INSERVER_UP is what we expect to be returned.
                     serverInfo: Server Info URI Fragment. This will not return the Status of the Inserver and will not indicate
                         whether it is in a functioning state or not.
@@ -73,28 +78,29 @@
 
 
     $globalVars = @{
-        $baseUri = "https://apachetomcat:port/integrationserver/"; # This value must be the Base URI and not an actual API Call.
-        $documents = "document"
-        $views = "view"
-        $drawers = "drawer"
-        $workflowItems = "workflowItem"
-        $serverStatus = "status"
-        $serverInfo = "serverInfo"
-        $xIntegrationServerUsername = "departmentmanager"
-        $xIntegrationServerPassword = "departmentmanagerpassword"
-        $connection = "connection"
-        $v1 = "v1"; #Establishing versioning for calls version 1
-        $v2 = "v2"; #Establishing versioning for calls version 2
-        $v3 = "v3"; #Establishing versioning for calls version 3
-        $v4 = "v4"; #Establishing versioning for calls version 4
-        $v5 = "v5"; #Establishing versioning for calls version 5. Remainder of API calls live within 1 - 5 versions.
-        $v6 = "v6"; #Establishing versioning for calls version 6
-        $v7 = "v7"; #Establishing versioning for calls version 7
-        $v8 = "v8"; #Establishing versioning for calls version 8
-        $v9 = "v9"; #Establishing versioning for calls version 9
-        $v10 = "v10"; #Establishing versioning for calls version 10
-        $v11 = "v11"; #Establishing versioning for calls version 11. Document API Calls go up to version 11.
-        $interactive = $false;
+        baseUri = "https://apachetomcat:port/integrationserver/"; # This value must be the Base URI and not an actual API Call.
+        documents = "document";
+        views = "view";
+        drawers = "drawer";
+        workflowItems = "workflowItem";
+        serviceStatus = "status";
+        serverInfo = "serverInfo";
+        xIntegrationServerUsername = "departmentmanager";
+        xIntegrationServerPassword = "departmentmanagerpassword";
+        connection = "connection";
+        workflowQueues = "workflowQueue"; # Since the Queue is provided along with the Process.
+        v1 = "v1"; #Establishing versioning for calls version 1
+        v2 = "v2"; #Establishing versioning for calls version 2
+        v3 = "v3"; #Establishing versioning for calls version 3
+        v4 = "v4"; #Establishing versioning for calls version 4
+        v5 = "v5"; #Establishing versioning for calls version 5. Remainder of API calls live within 1 - 5 versions.
+        v6 = "v6"; #Establishing versioning for calls version 6
+        v7 = "v7"; #Establishing versioning for calls version 7
+        v8 = "v8"; #Establishing versioning for calls version 8
+        v9 = "v9"; #Establishing versioning for calls version 9
+        v10 = "v10"; #Establishing versioning for calls version 10
+        v11 = "v11"; #Establishing versioning for calls version 11. Document API Calls go up to version 11.
+        interactive = $false;
     }
 
     $headers = @{
@@ -108,7 +114,7 @@
     $response = $request.GetResponse()
     $xIntegrationServerSessionHash = $request.Headers["X-IntegrationServer-Session-Hash"]
 
-    if(!$xIntegrationServerSessionHash){
+    if($NULL -eq $xIntegrationServerSessionHash){
         Write-Host "Failed to establish a connection and receive an X-IntegrationServer-Session-Hash"
         break
     }
@@ -135,13 +141,16 @@ documents
 views
 drawers
 workflowItems
-serverStatus
+serviceStatus
+serverInfo
 "@
 
 
     Write-Host $actionsList
-    $action = Read-Host "Please provide an action:"
+    $action = "start"
     while($action -ne "end"){
+        # we need to
+        $action = Read-Host "Please provide an action (`"end`" will exit the while loop):"
     if($action -eq "documents"){
         Write-Host "We are going to perform a document retrieval"
         $documentHeaders = @{
@@ -158,7 +167,7 @@ serverStatus
         $docResponse = $docReq.GetResponse()
         $docStatusCode = $docReq.StatusCode
 
-        if($docStatusCode -ne 200){
+        if($docStatusCode -ne 200 -or $docReq.Headers["X-IntegrationServer-Session-Hash"] -ne $xIntegrationServerSessionHash){
             
             Write-Host "Invalid Document ID, Invalid Session Hash, Or User does not have permissions to the Document."
         
@@ -173,7 +182,7 @@ serverStatus
                 Write-Host "Successfully validated the X-IntegrationServer-Session-Hash Header against the Response."
             }
         }
-
+        # Needs the $action block
     } elseif($action -eq "views"){
         Write-Host "We are going to perform a view retrieval and run"
         Write-Host "Our expected output will be an xml. Effectively, the Response Body."
@@ -235,7 +244,7 @@ serverStatus
                 }
             }
         }
-
+        # Needs $action block.
     } elseif($action -eq "drawers"){
         Write-Host "We are going to perform a view retrieval and run"
         Write-Host "Our expected output will be an xml. Effectively, the Response Body."
@@ -299,8 +308,117 @@ serverStatus
         }
 
     } elseif($action -eq "workflowItems"){
-    
-    } elseif($action -eq "serverStatus") {
+        # First we will need to find the Queue we are targeting, it's name, and ID.
+        # We need the originating Queue and Process as well as the Destination Queue and Process
+        $workflowQueuesUri = "$($globalVars.baseUri)/$($globalVars.v1)/$($globalVars.workflowQueues)"
+        $getWorkflowQueues = Invoke-WebRequest -Uri $workflowQueuesUri -Method "GET" -Headers @drawerSpecificHeaders -SkipCertificateCheck
+
+        [xml]$xml = $getWorkflowQueues.Content
+                #$workflowQueuesReturned = $xml.workflowQueues.workflowQueue
+        # 
+        $queues = $xml.SelectNodes("//workflowQueues/workflowQueue") | Select-Object -Property @{Name='name';Expression={$_.name.'#text'}}, @{Name='id';Expression={$_.id.'#text'}}, @{Name='processName';Expression={$_.processName.'#text'}}, @{Name='processId';Expression={$_.processId.'#text'}}
+
+        Write-Host "Please make a selection from below and provide them in the next steps."
+        Write-Host "Your selection must include the Originating Queue and Process"
+        Write-Host "Along with the Destination Queue and Process"
+        Write-Host "This is to ensure that you are making the correct pairs."
+        Write-Host $queues
+                <# $queueNames = @()
+                foreach ($queueName in $workflowQueuesReturned){
+                    $queueNamesIdVal = $queueName.name
+                    $queueNames += $queueNamesIdVal
+                } #>
+        
+        $workflowItemId = Read-Host "Please Provide a Valid Workflow ITEM_ID:"
+        $originatingQueueId = Read-Host "Please Provide the Originating Queue Id:"
+        $originatingQueueName = Read-Host "Provide the Originating Queue Name:"
+        $destinationQueueId = Read-Host "Please provide the Queue Id for the Destination Queue:"
+        <#
+        # Uncomment this section and comment out the previous $xmlBody
+        $routeType = Read-Host "Please Provide a Route Type(AUTO,MANUAL,CONDITIONAL,PARALLEL,CONDITIONAL_PARALLEL,PEER, and BALANCED):"
+        $reason = Read-Host "Please Provide a reason. Try to keep this within 256 characters:"
+                $xmlBody = [xml] @"
+<routingAction>
+    <originWorkflowQueueId>$($originatingQueueId)</originWorkflowQueueId>
+    <originWorkflowQueueName>$($originatingQueueName)</originWorkflowQueueName>
+    <destinationWorkflowQueueId>$($destinationQueueId)</destinationWorkflowQueueId>
+    <routeType>$($routeType)</routeType>
+    <reason>$($reason)</reason>
+</routingAction>
+"@
+# 
+        #>
+
+        $xmlBody = [xml] @"
+<routingAction>
+    <originWorkflowQueueId>$($originatingQueueId)</originWorkflowQueueId>
+    <originWorkflowQueueName>$($originatingQueueName)</originWorkflowQueueName>
+    <destinationWorkflowQueueId>$($destinationQueueId)</destinationWorkflowQueueId>
+    <routeType>AUTO</routeType>
+    <reason>Routed by Powershell Script.</reason>
+</routingAction>
+"@
+        $workflowSpecificHeaders = @{
+            "Accept"="application/xml";
+            "X-IntegrationServer-Session-Hash"=$xIntegrationServerSessionHash;
+            "Content-Type"="application/xml";
+        }
+        $routingActionUri = "$($globalVars.baseUri)/$($globalVars.v1)/$($globalVars.workflowItems)/$($workflowItemId)"
+        $performRoutingAction = Invoke-WebRequest -Uri $routingActionUri -Method "POST" -Headers @workflowSpecificHeaders -Body $xmlBody.OuterXml -SkipCertificateCheck
+        $performRoutingActionResponse = $performRoutingAction.GetResponse()
+
+        IF($performRoutingAction.StatusCode -ne 200){
+            Write-Host "An HTTP Status Code of 200 was not received."
+        } ELSE {
+            Write-Host "Your Document has routed successfully with a status code of: $($performRoutingAction.Status)"
+            Write-Host "Workflow with ITEM_ID: $($workflowItemId)"
+            Write-Host "Workflow Originating QUEUE_ID: $($originatingQueueId)"
+            Write-Host "Workflow Originating QUEUE_NAME: $($originatingQueueName)"
+            Write-Host "Workflow Destination QUEUE_ID: $($destinationQueueId)"
+            Write-Host "With a response body of: $($performRoutingAction.Content)"
+            # Uncomment the below lines if you would like input for routeType and reason.
+            # Write-Host "Workflow ROUTE_TYPE: $($routeTpye)"
+            # Write-Host "Workflow Reason Provided: $($reason)"
+        }
+
+
+    } ELSEIF($action -eq "serviceStatus") {
+        $checkServiceStatus = Invoke-WebRequest -Uri "$($globalVars.baseUri)/$($globalVars.v1)/$($globalVars.serviceStatus)" -Method "GET" -SkipCertificateCheck
+        $checkServiceStatusResponse = $checkServiceStatus.GetResponse()
+        [xml]$xml = $checkServiceStatus.Content
+        $serviceStatusNode = $xml.SelectSingleNode("/serviceStatus/perceptiveContentStatus")
+            IF($serviceStatusNode -eq "INSERVER_UP")
+            {
+                Write-Host "The Main Application Server is Up."
+            }
+            ELSEIF ($serviceStatusNode -eq "INSERVER_DOWN_DB_ERROR")
+            {
+                Write-Host "The Main Application Server Database is Down."
+            }
+            ELSEIF ($serviceStatusNode -eq "INSERVER_DOWN_UNREACHABLE")
+            {
+                Write-Host "The Main Application Server is Unreachable."
+            }
+            ELSE
+            {
+                Write-Host "Unexpected Status returned for the Service Status: $($serviceStatusNode)"
+            }
+    } ELSEIF($action -eq "serverInfo") {
+        $serverInfotUri = "$($globalVars.baseUri)/$($globalVars.v1)/$($globalVars.serverInfo)"
+        $serverInfoHeaders = @{
+            "Accept"="application/xml";
+        }
+        $checkServerInfo = Invoke-WebRequest -Uri $serverInfotUri -Method "GET" -Headers @serverInfoHeaders -SkipCertificateCheck
+        $checkServerInfoResponse = $checkServerInfo.GetResponse()
+        [xml]$xml = $checkServerInfo.Content
+
+        $serverInfoVersionAndBuild = $xml.SelectSingleNode("/serverInfo/version")
+
+        IF($NULL -ne $serverInfoVersionAndBuild){
+            Write-Host "The Version and Build used is: $($serverInfoVersionAndBuild)"
+        } ELSE {
+            Write-Host "Received an HTTP Status Code of $($checkServerInfo.StatusCode) instead of the Version and Build."
+        }
     
     }
 
@@ -310,5 +428,5 @@ $disconnectHeaders = @{
     "Accept"="application/xml";
     "X-IntegrationServer-Session-Hash"= $xIntegrationServerSessionHash;
 }
-
+# We are always going to disconnect at the end of our Session/Script run.
 Invoke-WebRequest -Uri "$($baseUri)/$($globalVars.v1)/$($globalVars.connection)" -Headers $disconnectHeaders -Method "DELETE" -SkipCertificateCheck
