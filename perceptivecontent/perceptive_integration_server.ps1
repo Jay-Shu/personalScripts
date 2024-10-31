@@ -28,7 +28,16 @@
                     This script isn't meant to be over the top. However, can demonstrate the expected behavior of working with Integration Server. For a Developer
                         this is crucial for a successful and stable integration. Additionally, 
                     RESTful is expected to be faster than SOAP. This has been verified.
-                    Configuration files within Perceptive Content must be in UTF-8-BOM.
+                    Configuration files within Perceptive Content must be in UTF-8-BOM (e.g. inserver.ini, inow.ini, inserverOutput.ini, etc.).
+                    Troubleshooting Integration Server:
+                        -Invalid Version; Your Inserver is not accepting logins/logons. IN_LIC_MON is where your answer will be.
+                        -INSERVER_DOWN_UNREACHABLE/INSERVER_DOWN_DB_ERROR; Reach out to Customer support as your Inserver is unable to stay running
+                            or your database is running into errs. Low hanging fruit is checking if the integrationserver.ini is configured correctly.
+                            Other areas may be Apache Tomcat is unable to run, not started, or encountering an error code 1.
+                        -Unable to reach or find host on port: <6000> ; Within the integrationserver.ini the configured Application Server is either not reachable,
+                            network errs, incorrectly configured.
+                        -Client and Server version mismatch; The Integration Server in use is either too high or too low from the Application
+                            Server's Version and Build.
 
                     .INPUTS
                     globalVars: Hashtable for storing our globally accessible variables.

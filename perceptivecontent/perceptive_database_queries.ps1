@@ -10,6 +10,7 @@
                         2024-10-30: Incorrect formatting of Hash Table.
                         2024-10-30: paca.getAccounts to paca.getAccounts_v1.
                         2024-10-31: Migrated from previous connection model to Invoke-Sqlcmd.
+                        2024-10-31: Standardization of Invoke-Sqlcmd.
 
                     .EXAMPLE
                         Effectively this is what we are doing.
@@ -25,7 +26,7 @@
                 Citations:
                     Invoke-Sqlcmd, https://learn.microsoft.com/en-us/powershell/module/sqlserver/invoke-sqlcmd?view=sqlserver-ps
                     about_Special_Characters, https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_special_characters?view=powershell-7.4
-
+                    
 
                     #>
     #param (
@@ -164,7 +165,7 @@ $connection = New-Object System.Data.SqlClient.SqlConnection
 $connection.ConnectionString = $connectionStringActual #>
 
 try {
-    Invoke-Sqlcmd -Query $storedProcedureGetAccounts -Hostname $globalVars.server -Username $globalVars.uname -Password $globalVars.password -Database "PACA"
+    Invoke-Sqlcmd -Query $storedProcedureGetAccounts -Hostname $globalVars.server -Username $globalVars.uname -Password $globalVars.password -Database "PACA" -TrustServerCertificate $TRUE
     # Open the connection
    <#  $connection.Open()
     Write-Host "Connection opened successfully."
