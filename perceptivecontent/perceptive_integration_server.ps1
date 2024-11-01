@@ -8,6 +8,8 @@
                     
                     Changelog:
                         2024-10-29: Added remaining logic for all actions.
+                        2024-10:31: Added notes regarding URLs, Integration Server, and Content Apps.
+                        2024-11-01: Transition from Citations to .LINK keyword.
 
                     .EXAMPLE
                     This example demonstrates pseudo-code of the calls. Effectively; Establish Connection, Retrieve views,
@@ -28,6 +30,35 @@
                     This script isn't meant to be over the top. However, can demonstrate the expected behavior of working with Integration Server. For a Developer
                         this is crucial for a successful and stable integration. Additionally, 
                     RESTful is expected to be faster than SOAP. This has been verified.
+                    URLs: Understanding URL fragments will make understanding APIs much easier.
+                        SCHEME: https://
+                        USERINFO: username:password@
+                        HOSTNAME: myhostname.com
+                        PORT: 443
+                        PATH: v1/whatWeWantToDo
+                        QUERY: ?parameter=value&parameter2=value
+                        FRAGMENT: #path1
+                        QUERY and FRAGMENT are not utilized by Integration Server as a whole. These come into play with Perceptive Content Experience:
+                            Content Apps and building URLs to documents and workflows.
+                    Working with Perceptive Content Experience; Content Apps (view parameter is asking for the VIEW_ID, SysDocumentsAll is a Valid Id):
+                        - Hosted Document in a Viewer: https://apachetomcat:port/contentapps/#hosteddocument/{ClientDocumentId}?view=SysDocumentsAll&clientType={clientType}&clientInstance={clientInstanceId}&constraint={vsl}
+                        - Hosted Document and Page in a Viewer: https://apachetomcat:port/contentapps/#hosteddocument/{ClientDocumentId}/clientLogob/{clientLogobId}?view=SysAllDocuments&clientType={clientType}&clientInstance={clientInstanceId}&constraint={vsl}
+                        - Display Document Views: https://apachetomcat:port/contentapps/#documents (You cannot escape the # symbol with Load Balancing as it is a Path)
+                        - Display List of Documents in a View: https://apachetomcat:port/contentapps/#documents/view/{viewId}
+                        - Display Document in a Viewer: https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}
+                        - Display the view List Pane: https://apachetomcat:port/contentapps/#documents/view/{viewId}?fullscreen=true
+                        - Displays the properties of the Document: https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}?showproperties=true
+                        - Display the Forms associated with the Document: https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}?showforms=true
+                        - Display the related documents pane: https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}?showrelateddocs=true
+                        - Display the related tasks pane: https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}?showrelatedtasks=true
+                        - Display the thumbnails of the pages associate with the Document: https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}?showthumbnails=true
+                        - Display page using FittoHeight, FittoWidth, FittoWindow, or between 0 and 500: https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}?pageid={PageId}&zoomvalue=FitToWindow
+                        - Display the position of the thumbnails based on the position in the URL using left, right, or bottom: https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}?pageid={PageId}&thumbnailposition=left
+                        - Display a document in Simple Mode:  https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}?simplemode=true
+                        - Display a list of documents in a view using Simple Mode: https://apachetomcat:port/contentapps/#documents/view/{viewId}?simplemode=true
+                        - Documents are not displaying: Check that FCS is running, reachable, and not encountering errs.
+                        - 
+                    VSL is contained here: https://docs.hyland.com/ImageNow/en_US/7.11/iScript/iScript.htm#getting_started/VSL_commands.htm%3FTocPath%3DGet%2520started%7CVSL%7C_____2
                     Configuration files within Perceptive Content must be in UTF-8-BOM (e.g. inserver.ini, inow.ini, inserverOutput.ini, etc.).
                     Troubleshooting Integration Server:
                         -Invalid Version; Your Inserver is not accepting logins/logons. IN_LIC_MON is where your answer will be.
@@ -41,7 +72,8 @@
 
                     .INPUTS
                     globalVars: Hashtable for storing our globally accessible variables.
-                    baseUri: Base URL where Integration Server is installed at. Include the end slash.
+                    baseUri: Base URL where Integration Server is installed at. Include the end slash. This must be https unless you
+                        have Integration Server to accept insecure connections. It is against best practices to configure it insecurely.
                     documents: Password of the username performing the promoting and demoting. This must be a current Perceptive Manager.
                     views: View URI Fragment.
                     drawers: Drawer URI Fragment.
@@ -71,15 +103,45 @@
                         Accept, Content-Type, X-IntegrationServer-Resource-Name (filename of the page).
                     request: Our initial connection for establishing a session. This needs to result in an X-IntegrationServer-Session-Sash.
 
-                Citations:
-                    Invoke-WebRequest, https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-7.4
-                    What is Integration Server?, https://docs.hyland.com/Developer/IS/en_US/7.11/index.html
-                    Request Headers, https://docs.hyland.com/Developer/IS/en_US/7.11/requestheaders.html
-                    Licensing, https://docs.hyland.com/Developer/IS/en_US/7.11/licensing.html
-                    /v1/status, https://docs.hyland.com/Developer/IS/en_US/7.11/operations.html#call_ServiceStatus_V1_GET-status
-                    about_Comparison_Operators, https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comparison_operators?view=powershell-7.4
-                    /v1/drawer, https://docs.hyland.com/Developer/IS/en_US/7.11/operations.html#call_Drawer_V1_GET-drawer
-                    /v1/drawer/{id}, https://docs.hyland.com/Developer/IS/en_US/7.11/operations.html#call_Drawer_V1_GET-drawer-id
+                .LINK
+                    https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-7.4    
+                    Invoke-WebRequest
+                    
+                .LINK
+                    https://docs.hyland.com/Developer/IS/en_US/7.11/index.html
+                    What is Integration Server?
+                
+                .LINK
+                    https://docs.hyland.com/Developer/IS/en_US/7.11/requestheaders.html
+                    Request Headers
+
+                .LINK
+                    https://docs.hyland.com/Developer/IS/en_US/7.11/licensing.html
+                    Licensing
+
+                .LINK
+                    https://docs.hyland.com/Developer/IS/en_US/7.11/operations.html#call_ServiceStatus_V1_GET-status
+                    /v1/status
+
+                .LINK
+                    https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_comparison_operators?view=powershell-7.4
+                    about_Comparison_Operators
+
+                .LINK
+                    https://docs.hyland.com/Developer/IS/en_US/7.11/operations.html#call_Drawer_V1_GET-drawer
+                    /v1/drawer
+
+                .LINK
+                    https://docs.hyland.com/Developer/IS/en_US/7.11/operations.html#call_Drawer_V1_GET-drawer-id
+                    /v1/drawer/{id}
+
+                .LINK
+                    https://docs.hyland.com/Experience/en_US/3.8/DM/DM.htm#Topics/Content_Apps/Documents_Module/3.8.x_en_US/admin/Create_a_link_to_a_document.htm%3FTocPath%3DWork%2520with%2520documents%7C_____2
+                    Create a link to a document
+
+                .LINK
+                    https://docs.hyland.com/Developer/IS/en_US/7.11/operations.html#call_Document_V1_GET-document-id
+                    /v1/document
                     #>
     #param (
     #

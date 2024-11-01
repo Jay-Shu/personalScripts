@@ -11,10 +11,13 @@
                         2024-10-30: paca.getAccounts to paca.getAccounts_v1.
                         2024-10-31: Migrated from previous connection model to Invoke-Sqlcmd.
                         2024-10-31: Standardization of Invoke-Sqlcmd.
+                        2024-11-01: Transition from Citations to .LINK keyword.
 
                     .EXAMPLE
                         Effectively this is what we are doing.
                         EXECUTE paca.getAccounts_v1
+                        Invoke-Sqlcmd -Query "SELECT CURRENT_TIMESTAMP" -Hostname "localhost" -Database "MyDatabaseName" -EncryptConnection -Username "username" -Password "password" -TrustServerCertificate $TRUE
+                            For this example the parameters are supplied.
 
                     .NOTES
                         Needing to move over to Invoke-Sqlcmd from the current model.
@@ -23,10 +26,17 @@
                     .INPUTS
                         configurationActive: 1 = Perceptive Content, 2 = Python Auto Claims App
 
-                Citations:
-                    Invoke-Sqlcmd, https://learn.microsoft.com/en-us/powershell/module/sqlserver/invoke-sqlcmd?view=sqlserver-ps
-                    about_Special_Characters, https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_special_characters?view=powershell-7.4
+                    .LINK
+                        https://learn.microsoft.com/en-us/powershell/scripting/developer/help/syntax-of-comment-based-help?view=powershell-7.4
+                        Links to Syntax of Comment-Based Help
+
+                    .LINK
+                        https://learn.microsoft.com/en-us/powershell/module/sqlserver/invoke-sqlcmd?view=sqlserver-ps
+                        Invoke-Sqlcmd
                     
+                    .LINK
+                        https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_special_characters?view=powershell-7.4
+                        about_Special_Characters
 
                     #>
     #param (
@@ -82,12 +92,34 @@ inner join inuser.IN_INSTANCE i on d.INSTANCE_ID = i.INSTANCE_ID
 WHERE DOC_ID = N'321Z1234_1234567890'
 "@
 
+# Message Status of 4 needs to be reviewed. If it is related to HL7, then it could be as simple as inserting a value into the relevant tables.
+# Due to aggregation we have to use both MESSAGE_STATUS and MESSAGE_TYPE in the GROUP BY and OREDER BY Clauses.
+$externMessageTable = @"
+SELECT
+COUNT(MESSAGE_STATUS),
+CASE MESSAGE_STATUS
+WHEN 0 THEN N'Not Started'
+WHEN 1 THEN N'Started'
+WHEN 2 THEN N'In Process'
+WHEN 3 THEN N'Success (Complete)'
+WHEN 4 THEN N'Success (Incomplete)'
+WHEN 999 THEN N'Locked'
+END as N'Message Statuses',
+MESSAGE_TYPE
+FROM inemuser.IN_EXTERN_MESSAGE
+GROUP BY MESSAGE_STATUS, MESSAGE_TYPE
+HAVING COUNT(MESSAGE_STATUS) > 0
+ORDER BY MESSAGE_STATUS, MESSAGE_TYPE DESC
+"@
+
+
 # Moving to Invoke-Sqlcmd
     try {
         # Each of these can be separate instead of wrapped within 1 try...catch block
         Invoke-Sqlcmd -Query $databaseSchema -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
         Invoke-Sqlcmd -Query $retrieve1Document -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
         Invoke-Sqlcmd -Query $constructOutPutAgentFile -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
+        Invoke-Sqlcmd -Query $externMessageTable -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
         # Open the connection
         <# $connection.Open()
         Write-Host "Connection opened successfully."
@@ -131,11 +163,13 @@ WHERE DOC_ID = N'321Z1234_1234567890'
 } ELSEIF ($configurationActive -eq 2){
 
 
-$storedProcedureGetAccounts = @"
+$storedProcedureGetAccountsV1 = @"
 EXECUTE paca.getAccounts_v1
 "@
 
-
+$storedProcedureGetAccountsV2 = @"
+EXECUTE paca.getAccounts_v2 {'ACCOUNT_NUM':'ICA00000004'}
+"@
 
 <#
 
@@ -165,7 +199,8 @@ $connection = New-Object System.Data.SqlClient.SqlConnection
 $connection.ConnectionString = $connectionStringActual #>
 
 try {
-    Invoke-Sqlcmd -Query $storedProcedureGetAccounts -Hostname $globalVars.server -Username $globalVars.uname -Password $globalVars.password -Database "PACA" -TrustServerCertificate $TRUE
+    Invoke-Sqlcmd -Query $storedProcedureGetAccountsV1 -Hostname $globalVars.server -Username $globalVars.uname -Password $globalVars.password -Database "PACA" -TrustServerCertificate $TRUE
+    Invoke-Sqlcmd -Query $storedProcedureGetAccountsV2 -Hostname $globalVars.server -Username $globalVars.uname -Password $globalVars.password -Database "PACA" -TrustServerCertificate $TRUE
     # Open the connection
    <#  $connection.Open()
     Write-Host "Connection opened successfully."
