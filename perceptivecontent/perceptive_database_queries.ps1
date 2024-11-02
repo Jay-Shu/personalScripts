@@ -12,6 +12,9 @@
                         2024-10-31: Migrated from previous connection model to Invoke-Sqlcmd.
                         2024-10-31: Standardization of Invoke-Sqlcmd.
                         2024-11-01: Transition from Citations to .LINK keyword.
+                        2024-11-02: Query added using Common Table Expression for Index Fragmentation.
+                        2024-11-02: Actual Execution Plan Example for Index Fragmentation.
+                        2024-11-02: Logic added and while loop for selection instead of running all queries at once.
 
                     .EXAMPLE
                         Effectively this is what we are doing.
@@ -38,6 +41,13 @@
                         https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_special_characters?view=powershell-7.4
                         about_Special_Characters
 
+                    .LINK
+                        https://stackoverflow.com/questions/43683716/how-can-i-quickly-detect-and-resolve-sql-server-index-fragmentation-for-a-databa
+                        How can I quickly detect and resolve SQL Server Index Fragmentation for a database. 
+
+                    .LINK
+                        https://learn.microsoft.com/en-us/sql/t-sql/queries/with-common-table-expression-transact-sql?view=sql-server-ver16
+                        WITH common_table_expression (Transact-SQL)
                     #>
     #param (
     #
@@ -113,13 +123,77 @@ ORDER BY MESSAGE_STATUS, MESSAGE_TYPE DESC
 "@
 
 
+$fragmentation = @"
+WITH Index_CTE (NAME,avg_fragmentation_in_percent,fragment_count,avg_fragment_size_in_pages)
+AS
+(SELECT NAME, 
+       avg_fragmentation_in_percent, 
+       fragment_count, 
+       avg_fragment_size_in_pages 
+FROM   sys.Dm_db_index_physical_stats(Db_id('dbName'), Object_id('tableName'), 
+       NULL, 
+              NULL, NULL) AS a 
+       INNER JOIN sys.indexes b 
+               ON a.object_id = b.object_id 
+                  AND a.index_id = b.index_id
+				WHERE avg_fragmentation_in_percent > 30
+)
+SELECT NAME,avg_fragmentation_in_percent,fragment_count,avg_fragment_size_in_pages
+FROM Index_CTE
+"@
+
+<#
+    Actual Execution Plan of WITH Index_CTE
+    WITH Index_CTE (NAME,avg_fragmentation_in_percent,fragment_count,avg_fragment_size_in_pages)  AS  (SELECT NAME,          avg_fragmentation_in_percent,          fragment_count,          avg_fragment_size_in_pages   FROM   sys.Dm_db_index_physical_stats(Db_id('dbName'), Object_id('tableName'),          NULL,                 NULL, NULL) AS a          INNER JOIN sys.indexes b                  ON a.object_id = b.object_id                     AND a.index_id = b.index_id      WHERE avg_fragmentation_in_percent > 30  )  SELECT NAME,avg_fragmentation_in_percent,fragment_count,avg_fragment_size_in_pages  FROM Index_CTE
+  |--Nested Loops(Inner Join, OUTER REFERENCES:([i].[id], [Expr1026]) WITH UNORDERED PREFETCH)
+       |--Hash Match(Inner Join, HASH:([i].[id], [i].[indid])=(INDEXANALYSIS.[object_id], INDEXANALYSIS.[index_id]), RESIDUAL:(INDEXANALYSIS.[object_id]=[PACA].[sys].[sysidxstats].[id] as [i].[id] AND INDEXANALYSIS.[index_id]=[PACA].[sys].[sysidxstats].[indid] as [i].[indid]))
+       |    |--Filter(WHERE:(has_access('CO',[PACA].[sys].[sysidxstats].[id] as [i].[id])=(1)))
+       |    |    |--Clustered Index Scan(OBJECT:([PACA].[sys].[sysidxstats].[clst] AS [i]), WHERE:(([PACA].[sys].[sysidxstats].[status] as [i].[status]&(1))<>(0) AND ([PACA].[sys].[sysidxstats].[status] as [i].[status]&(67108864))=(0)))
+       |    |--Filter(WHERE:(INDEXANALYSIS.[avg_fragmentation_in_percent]>(3.0000000000000000e+001)))
+       |         |--Table-valued function
+       |--Clustered Index Seek(OBJECT:([PACA].[sys].[sysschobjs].[clst] AS [obj]), SEEK:([obj].[id]=[PACA].[sys].[sysidxstats].[id] as [i].[id]) ORDERED FORWARD)
+#>
+
+
 # Moving to Invoke-Sqlcmd
     try {
+
+        $querySelection = Read-Host "What would you like to run?"
+        WHILE($NULL -ne $querySelection){
+        IF($querySelection -eq 1)
+        {
         # Each of these can be separate instead of wrapped within 1 try...catch block
-        Invoke-Sqlcmd -Query $databaseSchema -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
-        Invoke-Sqlcmd -Query $retrieve1Document -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
-        Invoke-Sqlcmd -Query $constructOutPutAgentFile -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
-        Invoke-Sqlcmd -Query $externMessageTable -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
+            Invoke-Sqlcmd -Query $databaseSchema -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
+            $querySelection = $NULL
+            $querySelection = Read-Host "Please provide 1-5 or press enter"
+        }
+        ELSEIF($querySelection -eq 2)
+        {
+            Invoke-Sqlcmd -Query $retrieve1Document -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
+            $querySelection = $NULL
+            $querySelection = Read-Host "Please provide 1-5 or press enter"
+        }
+        ELSEIF($querySelection -eq 3)
+        {
+            Invoke-Sqlcmd -Query $constructOutPutAgentFile -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
+            $querySelection = $NULL
+            $querySelection = Read-Host "Please provide 1-5 or press enter"
+        }
+        ELSEIF($querySelection -eq 4)
+        {
+            Invoke-Sqlcmd -Query $externMessageTable -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
+            $querySelection = $NULL
+            $querySelection = Read-Host "Please provide 1-5 or press enter"
+        }
+        ELSEIF($querySelection -eq 5)
+        {
+            Invoke-Sqlcmd -Query $fragmentation -Hostname $globalPerceptiveVars.server -Database "INOW" -EncryptConnection -Username $globalPerceptiveVars.uname -Password $globalPerceptiveVars.password -TrustServerCertificate $TRUE
+            $querySelection = $NULL
+            $querySelection = Read-Host "Please provide 1-5 or press enter"
+        } ELSE {
+            $querySelection = $NULL
+            $querySelection = Read-Host "Please provide 1-5 or press enter"
+        }}
         # Open the connection
         <# $connection.Open()
         Write-Host "Connection opened successfully."

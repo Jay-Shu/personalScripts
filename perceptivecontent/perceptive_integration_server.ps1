@@ -1,15 +1,21 @@
 <#
                     .SYNOPSIS
-                    For performing and testing of API calls in succession. Integration Server is RESTful.
+                    For performing and testing of API calls in succession. Integration Server is RESTful. This just needs testing within a Perceptive
+                        Content Environment for additional edits.
 
                     .DESCRIPTION
                     This script is intended for working with Integration Server in various capacities. We need to establish a session
                         first before taking additional steps. Then immediately disconnect the session following
+                    When using IDs of Objects within Perceptive Content the age of the Object can be indicated by the beginning Characters
+                        If it is a 1 beginning then it is most likely before 6.x, if it begins with a 2 then it is 6.x, if it begins with
+                        a 3 then it is from 7.x. e.g. Default Drawer begins with a 1 therefore its creation/inception was 5.x. Similarly
+                        any documents created during that period also will begin with a 1. Proprietary ID generator.
                     
                     Changelog:
                         2024-10-29: Added remaining logic for all actions.
                         2024-10:31: Added notes regarding URLs, Integration Server, and Content Apps.
                         2024-11-01: Transition from Citations to .LINK keyword.
+                        2024-11-02: Added notes regarding SSO.
 
                     .EXAMPLE
                     This example demonstrates pseudo-code of the calls. Effectively; Establish Connection, Retrieve views,
@@ -30,6 +36,8 @@
                     This script isn't meant to be over the top. However, can demonstrate the expected behavior of working with Integration Server. For a Developer
                         this is crucial for a successful and stable integration. Additionally, 
                     RESTful is expected to be faster than SOAP. This has been verified.
+                    This "000000011SERVER_PING000000008END_MARK000000013CLOSE_SESSION" can be sent via a python script as bytes to the Perceptive Content Server to
+                        Test with the expected result of ".*SUCCESS.*".
                     URLs: Understanding URL fragments will make understanding APIs much easier.
                         SCHEME: https://
                         USERINFO: username:password@
@@ -42,7 +50,7 @@
                             Content Apps and building URLs to documents and workflows.
                     Working with Perceptive Content Experience; Content Apps (view parameter is asking for the VIEW_ID, SysDocumentsAll is a Valid Id):
                         - Hosted Document in a Viewer: https://apachetomcat:port/contentapps/#hosteddocument/{ClientDocumentId}?view=SysDocumentsAll&clientType={clientType}&clientInstance={clientInstanceId}&constraint={vsl}
-                        - Hosted Document and Page in a Viewer: https://apachetomcat:port/contentapps/#hosteddocument/{ClientDocumentId}/clientLogob/{clientLogobId}?view=SysAllDocuments&clientType={clientType}&clientInstance={clientInstanceId}&constraint={vsl}
+                        - Hosted Document and Page in a Viewer: https://apachetomcat:port/contentapps/#hosteddocument/{ClientDocumentId}/clientLogob/{clientLogobId}?view=SysDocumentsAll&clientType={clientType}&clientInstance={clientInstanceId}&constraint={vsl}
                         - Display Document Views: https://apachetomcat:port/contentapps/#documents (You cannot escape the # symbol with Load Balancing as it is a Path)
                         - Display List of Documents in a View: https://apachetomcat:port/contentapps/#documents/view/{viewId}
                         - Display Document in a Viewer: https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}
@@ -57,7 +65,6 @@
                         - Display a document in Simple Mode:  https://apachetomcat:port/contentapps/#documents/view/{viewId}/document/{DocID}?simplemode=true
                         - Display a list of documents in a view using Simple Mode: https://apachetomcat:port/contentapps/#documents/view/{viewId}?simplemode=true
                         - Documents are not displaying: Check that FCS is running, reachable, and not encountering errs.
-                        - 
                     VSL is contained here: https://docs.hyland.com/ImageNow/en_US/7.11/iScript/iScript.htm#getting_started/VSL_commands.htm%3FTocPath%3DGet%2520started%7CVSL%7C_____2
                     Configuration files within Perceptive Content must be in UTF-8-BOM (e.g. inserver.ini, inow.ini, inserverOutput.ini, etc.).
                     Troubleshooting Integration Server:
@@ -69,6 +76,59 @@
                             network errs, incorrectly configured.
                         -Client and Server version mismatch; The Integration Server in use is either too high or too low from the Application
                             Server's Version and Build.
+
+                    Regarding SSL_CERT_DIR and SSL_CERT_FILE environment variables:
+                        This is based on Linux pathing and is what is utilized by the OpenSSL Libraries baked into Perceptive Content.
+                        If you are using OpenSSL generated certificates then you must have the Root CA and Intermediate CA within
+                        the PEM formatted file. -----BEGIN CERTIFICATE-----Base64OfCertificate-----END CERTIFICATE-----
+                        You don't need both set.
+                        OpenSSL MD5
+                    Working with Single Sign-On:
+                        Single Sign-on is not covered under an SMSA.
+                        SAML/SAML2 are considered Legacy. (Considerably more difficult than OIDC for configuration, you must
+                            have an understanding of Certificates, Ciphers, Algorithms, X509, CSRs, CLRs, Load-Balancing,
+                            Special Headers, metadata.xml, and LDAP concepts).
+                        OAuth2/OIDC are the current Standards.
+                        CAS is a good Proof of Concept Software for various SSO needs. It also limits who is authorized through.
+                            It can also be configured for session persistance via jdbc. With JSON registration in HJSON format.
+                            CAS Server Auth is available for Perceptive DataTransfer and Nolijweb.
+                        Hyland IDP (Identity Provider) is not necessary for OpenID Connect to work. You just need an OpenID Provider.
+                            profile.onbase scope is required if you plan on using Hyland IDP.
+                        Yahoo for OpenID Connect has 1 extra byte than expected when previously tested.
+                        All parts of your Solution utilizing SSO must be secured. Mixed traffic is not allowed in the flow.
+                            This means you can only have the scheme of https and not http scheme.
+
+                    Integration Server OIDC:
+                        [OpenID Connect Login Profiles]
+                        sso.openid.login.enabled=TRUE
+                        sso.openid.profiles=contentapps,cas
+                        sso.openid.profile.contentapps.client.id={ClientID issued by your OpenID Provider}
+                        sso.openid.profile.contentapps.authorization.endpoint=https://myopenidprovider:port/IdP/connect/authorize
+                        sso.openid.profile.contentapps.post.login.redirect.uri=https://apachetomcat:port/contentapps/#oidc/callback
+                        sso.openid.profile.contentapps.error.redirect.uri=https://apachetomcat:port/contentapps/#oidc/callback?error={error}
+                        sso.openid.profile.contentapps.use.pkce=TRUE
+                        sso.openid.profile.contentapps.scope=openid
+                        sso.openid.profile.contentapps.same.site.cookies.policy=UNSET
+                        sso.openid.profile.contentapps.strict.callback.uri.validation=TRUE
+                        sso.openid.profile.contentapps.max.response.value.size=4096
+                        sso.openid.profile.contentapps.allowed.app.types=web,desktop
+
+                    inserver.ini OIDC:
+                        [OpenID Conneact Login Profiles]
+                        sso.openid.profiles=contentapps,cas
+                        sso.openid.profile.contentapps.cllient.id={ClientID issued by your OpenID Provider}
+                        sso.openid.profile.contentapps.client.secret={PlaintextPassword run "inserver -encrypt-config" to encrypt the password}
+                        sso.openid.profile.contentapps.user.claim=username
+                        sso.openid.profile.contentapps.discovery.endpoint=https://myopenidprovider:port/IdP/.well-known/openid-configuration
+                        sso.openid.profile.cas.cllient.id={ClientID issued by your OpenID Provider}
+                        sso.openid.profile.cas.client.secret={PlaintextPassword run "inserver -encrypt-config" to encrypt the password}
+                        sso.openid.profile.cas.user.claim=username
+                        ;sso.openid.profile.cas.discovery.endpoint=https://mycasopenidprovider:port/IdP/.well-known/openid-configuration
+                        sso.openid.profile.cas.issuer.uri=https://mycasopenidprovider:port/IdP
+                        sso.openid.profile.cas.token.endpoint=https://mycasopenidprovider:port/IdP/connect/token
+                        sso.openid.profile.cas.userinfo.endpoint=https://mycasopenidprovider:port/IdP/connect/userinfo
+
+                    
 
                     .INPUTS
                     globalVars: Hashtable for storing our globally accessible variables.
@@ -102,6 +162,11 @@
                     headers: These are the headers we will be using X-IntegrationServer-UserName, X-IntegrationServer-Password, X-IntegrationServer-Session-Hash,
                         Accept, Content-Type, X-IntegrationServer-Resource-Name (filename of the page).
                     request: Our initial connection for establishing a session. This needs to result in an X-IntegrationServer-Session-Sash.
+
+
+                .LINK
+                    https://learn.microsoft.com/en-us/dotnet/api/system.xml.xmlnode.selectsinglenode?view=net-8.0
+                    XmlNode.SelectSingleNode Method
 
                 .LINK
                     https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-7.4    
@@ -232,7 +297,7 @@ serverInfo
 
         $documentId = Read-Host "Provide a valid Document ID (must begin with 1(5.x), 2 (6.x) or 321Z(7.x) ):"
 
-        $documentUri = "$($globalVars.baseUri)/$($globalVars.v1)/$($globalVars.documents)/$($documentId)"
+        $documentUri = "$($globalVars.baseUri)/$($globalVars.v11)/$($globalVars.documents)/$($documentId)"
         $docReq = Invoke-WebRequest -Uri $documentUri -Method "GET" -Headers @documentHeaders -SkipCertificateCheck
 
         $docResponse = $docReq.GetResponse()
@@ -245,7 +310,7 @@ serverInfo
         } else 
         {
             # Validation of our header is necessary. That has to come after the Status code is checked.
-            $docISSH = $request.Headers["X-IntegrationServer-Session-Hash"]
+            $docISSH = $docReq.Headers["X-IntegrationServer-Session-Hash"]
             if($docISSH -ne $xIntegrationServerSessionHash) {
                 Write-Host "Something has changed and your X-IntegrationServer-Session-Hash is no longer valid or has updated."
                 break
@@ -267,14 +332,16 @@ serverInfo
         $getViews = Invoke-WebRequest -Uri $viewUri -Method "GET" -Headers @viewHeaders -SkipCertificateCheck
         $viewsResponse = $getViews.GetResponse()
         $viewsStatusCode = $getViews.StatusCode
-
+        <#
+            Column Selectors match with column types.
+        #>
         if($viewsStatusCode -ne 200){
             Write-Host "We are expecting an HTTP Status code of 200."
             break
         } else 
         {
             # Validation of our header is necessary. That has to come after the Status code is checked.
-            $viewISSH = $request.Headers["X-IntegrationServer-Session-Hash"]
+            $viewISSH = $getViews.Headers["X-IntegrationServer-Session-Hash"]
             if($viewISSH -ne $xIntegrationServerSessionHash) {
                 Write-Host "Something has changed and your X-IntegrationServer-Session-Hash is no longer valid or has updated."
                 break
@@ -457,7 +524,7 @@ serverInfo
         $checkServiceStatus = Invoke-WebRequest -Uri "$($globalVars.baseUri)/$($globalVars.v1)/$($globalVars.serviceStatus)" -Method "GET" -SkipCertificateCheck
         $checkServiceStatusResponse = $checkServiceStatus.GetResponse()
         [xml]$xml = $checkServiceStatus.Content
-        $serviceStatusNode = $xml.SelectSingleNode("/serviceStatus/perceptiveContentStatus")
+        $serviceStatusNode = $xml.SelectSingleNode("//serviceStatus/perceptiveContentStatus")
             IF($serviceStatusNode -eq "INSERVER_UP")
             {
                 Write-Host "The Main Application Server is Up."
@@ -500,4 +567,7 @@ $disconnectHeaders = @{
     "X-IntegrationServer-Session-Hash"= $xIntegrationServerSessionHash;
 }
 # We are always going to disconnect at the end of our Session/Script run.
-Invoke-WebRequest -Uri "$($baseUri)/$($globalVars.v1)/$($globalVars.connection)" -Headers $disconnectHeaders -Method "DELETE" -SkipCertificateCheck
+# IF($globalVars.interactive -eq $TRUE){
+Invoke-WebRequest -Uri "$($baseUri)/$($globalVars.v1)/$($globalVars.connection)" -Headers @disconnectHeaders -Method "DELETE" -SkipCertificateCheck
+# }
+
