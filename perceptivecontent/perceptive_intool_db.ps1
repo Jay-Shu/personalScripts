@@ -3,20 +3,34 @@
                     For Utilizing the DB Specific Intool Commands.
 
                     .DESCRIPTION
-                    This script is intended to make the process of promoting and demoting of Perceptive Users to/from Managers.
+                    This script is intended for running intool commands relevant to the Database.
 
                     .EXAMPLE
-                    intool --cmd promote-perceptive-manager --username myusername --login-name currentperceptivemanager --login-password currentperceptivemanagerpassword
-                    intool --cmd demote-perceptive-manager --username myusername --login-name currentperceptivemanager --login-password currentperceptivemanagerpassword
+                    &{intool --cmd db-struct --table-name IN_DOC}
 
                     .NOTES
-                    This script is inclusive to Promote and Demote. Not intended for other uses.
+                    Decision between either creating a form or sticking with the While Loop needs to be made in the near future.
 
                     .INPUTS
-                    username: Username that will be performing the promoting and demoting. This must be a current Perceptive Manager.
-                    password: Password of the username performing the promoting and demoting. This must be a current Perceptive Manager.
-                    inserverBin64: Inserver Installation Directory. This is where your executables live.
-                    inserverBin64Old: Inserver Installation Directory for solutions from older versions. Prior to Version 7, it was [drive]:\inserver6
+                    inserverBin64: Bin64 directory for your Perceptive Content Installation.
+                    inserverBin64Old: Bin64 directory for your Upgraded Perceptive Content Installation.
+                    schema: Database Schema used is inuser or inemuser
+                    in_doc: Documents Table
+                    in_sc_users: Users Table
+                    in_wf_queue: Workflow Queues Table
+                    in_wf_process: Worklow Processes Table
+                    in_wf_item: Workflow Item Table
+                    in_wf_item_hist: Workflow History Table
+                    in_wf_item_queue_hist: Workflow Item Queue History Table.
+                    in_wf_item_hist_arch: Workflow Item History Archive Table.
+                    in_wf_item_queue_hist_arch: Workflow Item QUeue History Archive Table.
+                    examples: Run examples $true, don't run examples $false
+                    choiceMenu: Decision List.
+                    chosenItem: chosenMenu item decided by the user
+                    inputTable: The Table being used for db-struct.
+
+                    .LINK
+                    
                     #>
     #param (
     #
@@ -66,33 +80,33 @@ WHILE ($NULL -ne $chosenItem){
 IF($chosenItem -eq "db-struct"){
     IF($examples -eq $true){
         IF (Test-Path -Path $globalVars.inserverBin64)
-{
+            {
     # Bin64
     
-    &{intool --cmd db-struct --table-name $globalVars.in_doc}
-    &{intool --cmd db-struct --table-name $globalVars.in_sc_users}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_queue}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_process}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_item}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_item_hist}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_item_queue_hist}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_item_hist_arch}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_item_queue_hist_arch}
+                &{intool --cmd db-struct --table-name $globalVars.in_doc}
+                &{intool --cmd db-struct --table-name $globalVars.in_sc_users}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_queue}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_process}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_item}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_item_hist}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_item_queue_hist}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_item_hist_arch}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_item_queue_hist_arch}
 
-} # IF Closing for Bin64
-    ELSEIF (Test-Path -Path $globalVars.inserverBin64Old)
-{
+            } # IF Closing for Bin64
+        ELSEIF (Test-Path -Path $globalVars.inserverBin64Old)
+            {
     # Bin
-    &{intool --cmd db-struct --table-name $globalVars.in_doc}
-    &{intool --cmd db-struct --table-name $globalVars.in_sc_users}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_queue}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_process}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_item}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_item_hist}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_item_queue_hist}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_item_hist_arch}
-    &{intool --cmd db-struct --table-name $globalVars.in_wf_item_queue_hist_arch}
-} # ELSEIF Closing for Bin
+                &{intool --cmd db-struct --table-name $globalVars.in_doc}
+                &{intool --cmd db-struct --table-name $globalVars.in_sc_users}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_queue}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_process}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_item}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_item_hist}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_item_queue_hist}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_item_hist_arch}
+                &{intool --cmd db-struct --table-name $globalVars.in_wf_item_queue_hist_arch}
+            } # ELSEIF Closing for Bin
 
     } ELSE {
         # Note, that these queries are executed by the inuser. The inuser account is a Database Level Account.
@@ -305,8 +319,12 @@ If you do not wish to make a choice, just press enter.
 
 } # While Loop
 
+
+<#
+    Decision List planning on turning into either a function or form.
+#>
 function decisionList{
-    $chosenItem = $NULL
+    
     $choiceMenu = @"
 Please select from the following list:
 db-struct
@@ -317,5 +335,6 @@ db-schema-validation
 
 If you do not wish to make a choice, just press enter.
 "@
+    $chosenItem = $NULL
     $chosenItem = Read-Host $choiceMenu
 }

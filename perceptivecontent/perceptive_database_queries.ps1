@@ -142,6 +142,18 @@ SELECT NAME,avg_fragmentation_in_percent,fragment_count,avg_fragment_size_in_pag
 FROM Index_CTE
 "@
 
+
+# If you do not have an ERD, this will be the next best thing. Aside from downloading the creation script.
+$initialDatabaseProbe = @"
+SELECT sc.TABLE_NAME,sc.COLUMN_NAME, (UPPER(REPLACE(REPLACE(REPLACE(REPLACE(DATA_TYPE + '('+CAST(isNull(sc.CHARACTER_MAXIMUM_LENGTH,'') as varchar(max))
++')','(0)',''),'nvarchar(-1)','nvarchar(max)'),'varbinary(-1)','varbinary(max)'),'varchar(-1)','varchar(max)'))) as 'Data Type',
+CASE sc.IS_NULLABLE
+WHEN 'NO' THEN 'NOT NULL'
+WHEN 'YES' THEN 'NULL'
+end as 'Nullable'
+FROM INFORMATION_SCHEMA.COLUMNS sc
+"@
+
 <#
     Actual Execution Plan of WITH Index_CTE
     WITH Index_CTE (NAME,avg_fragmentation_in_percent,fragment_count,avg_fragment_size_in_pages)  AS  (SELECT NAME,          avg_fragmentation_in_percent,          fragment_count,          avg_fragment_size_in_pages   FROM   sys.Dm_db_index_physical_stats(Db_id('dbName'), Object_id('tableName'),          NULL,                 NULL, NULL) AS a          INNER JOIN sys.indexes b                  ON a.object_id = b.object_id                     AND a.index_id = b.index_id      WHERE avg_fragmentation_in_percent > 30  )  SELECT NAME,avg_fragmentation_in_percent,fragment_count,avg_fragment_size_in_pages  FROM Index_CTE
