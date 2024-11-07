@@ -81,8 +81,9 @@
                         This is based on Linux pathing and is what is utilized by the OpenSSL Libraries baked into Perceptive Content.
                         If you are using OpenSSL generated certificates then you must have the Root CA and Intermediate CA within
                         the PEM formatted file. -----BEGIN CERTIFICATE-----Base64OfCertificate-----END CERTIFICATE-----
-                        You don't need both set.
+                        You don't need both set. PICK ONE.
                         OpenSSL MD5
+
                     Working with Single Sign-On:
                         Single Sign-on is not covered under an SMSA.
                         SAML/SAML2 are considered Legacy. (Considerably more difficult than OIDC for configuration, you must
