@@ -1,0 +1,105 @@
+! Comments in this document are with an Exclamation Point.
+! Each procedure MUST follow this format. On the DB Side this is stored as HEX, convert it to Base64, and it can be decrypted by Jasypt.
+! begin-procedure name-here
+! end-procedure name-here
+
+! There are 3 possible steps that must be accomplished for each job processed through Perceptive DataTransfer
+! MATCH, REVIEW, UPLOAD, MATCH RESULT DISPLAY, DATABASE POPULATION SELECTION
+! If a Status is not assigned to a job within a batch then it will always be considered unassigned/status-less
+! Your remaining logic will not execute.
+
+! Data Types: Character/String ($), Date (&), and Number (#)
+! Prefix the character "$" to the beginning of the variable to declare it as a String.
+! Variables must be added to be used within Perceptive DataTransfer. Otherwise, you will receive an error wtihin the GUI
+! Stating that the variable does not exist/has not been added.
+
+begin-procedure get-reorg-indexes
+begin-select
+avg_fragmentation_in_percent, 
+       fragment_count, 
+       avg_fragment_size_in_pages
+       exit-select
+FROM   sys.Dm_db_index_physical_stats(Db_id('dbName'), Object_id('tableName'), 
+       NULL, 
+              NULL, NULL) AS a 
+       INNER JOIN sys.indexes b 
+               ON a.object_id = b.object_id 
+                  AND a.index_id = b.index_id
+				WHERE avg_fragmentation_in_percent < 30
+end-select
+end-procedure get-reorg-indexees
+
+
+begin-procedure get-rebuild-indexes
+end-procedure get-rebuild-indexes
+
+
+begin-procedure get-document-id
+
+! We have to exit the select in order to store the values, Otherwise nothing is stored.
+! Object ID will be the equivalent to the Document ID.
+begin-select
+d.DOC_ID ~$doc_id,
+d.FOLDER ~$f1,
+d.TAB ~$f2,
+d.F3 ~$f3,
+d.F4 ~$f4,
+d.F5 ~$f5,
+wfi.ITEM_ID ~$item_id_actual
+exit-select
+FROM inuser.IN_DOC d
+INNER JOIN inuser.IN_WF_ITEM wfi on wfi.OBJ_ID = d.DOC_ID
+WHERE wfi.ITEM_ID = $item_id
+end-select
+! You cannot put comments within a begin-select...end-select block. Use whatever character the SQL calls for as the Comments.
+
+end-procedure get-document-id
+
+! An example of grabbing 1 row, with all of it's relevant metadata. We do not need the notes unless that is absolutely necessary
+! Following this we could also have another procedure that finds where the document is within workflow, it's current queue and destination queue.
+! In order for this to work correctly we need to have DataProviders defined. Because the behavior of Integration Server alone is limited.
+! Configuring the DataProviders gives us the flexibility we need. However, Each Action is the full 4 steps; Connect, find the thing, do the thing, close out the Connection.
+! DataProviderCall ($webServiceName, $payload)
+! Syntax may need to be updated to include tilde
+
+begin-procedure get-queue-ids
+
+$destination_queue = 'Next Queue'
+$destination_queue_id = '<QUEUE_ID>'
+! <You can choose to grab this from a DataProviderCall, SQL Query, or Manually Supplied>
+
+begin-select
+wfi.QUEUE_ID ~$origin_queue_id,
+wfi.QUEUE_NAME $origin_queue_name,
+wfi.OBJ_ID = ~$obj_id,
+d.DOC_ID = ~$doc_id_actual
+exit-select
+FROM inuser.IN_WF_QUEUE q
+INNER JOIN inuser.IN_WF_ITEM wfi on wfi.QUEUE_ID = q.QUEUE_ID
+INNER JOIN inuser.IN_DOC d on d.DOC_ID = wfi.OBJ_ID
+WHERE d.DOC_ID = $doc_id
+end-select
+
+$payload = '<routingAction>
+<originWorkflowQueueId>' + $origin_queue_id + '</originWorkflowQueueId>
+<originWorkflowQueueName>' + $origin_queue_name + '</originWorkflowQueueName>
+<destinationWorkflowQueueId>' + $destination_queue_id + '</destinationWorkflowQueueId>'
+<routeType>MANUAL</routeType>
+</routingAction>'
+
+
+DataProviderCall($routingAction,$payload)
+
+! Essentially the following is performed:
+! Our DataProviderCall will be routingAction
+! /v1/workflowItem/{id}/routingAction
+!<routingAction>
+! <originWorkflowQueueId>$ORIGIN_QUEUE_ID</originWorkflowQueueId>
+! <originWorkflowQueueName>$ORIGIN_QUEUE_NAME</originWorkflowQueueName>
+! <destinationWorkflowQueueId>$destination_queue_id</destinationWorkflowQueueId>
+! <routeType>MANUAL</routeType>
+! <reason>Routed from the Queue $ORIGIN_QUEUE_NAME</reason>
+!</routingAction>
+! Note: When feeding in values to a DataProviderCall their actual representation will be either with a {#} or the Variable to which it lives under.
+
+end-procedure get-queue-ids

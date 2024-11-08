@@ -12,38 +12,48 @@
                     Decision between either creating a form or sticking with the While Loop needs to be made in the near future.
 
                     .INPUTS
-                    inserverBin64: Bin64 directory for your Perceptive Content Installation.
-                    inserverBin64Old: Bin64 directory for your Upgraded Perceptive Content Installation.
-                    schema: Database Schema used is inuser or inemuser
-                    in_doc: Documents Table
-                    in_sc_users: Users Table
-                    in_wf_queue: Workflow Queues Table
-                    in_wf_process: Worklow Processes Table
-                    in_wf_item: Workflow Item Table
-                    in_wf_item_hist: Workflow History Table
-                    in_wf_item_queue_hist: Workflow Item Queue History Table.
-                    in_wf_item_hist_arch: Workflow Item History Archive Table.
-                    in_wf_item_queue_hist_arch: Workflow Item QUeue History Archive Table.
-                    examples: Run examples $true, don't run examples $false
-                    choiceMenu: Decision List.
-                    chosenItem: chosenMenu item decided by the user
-                    inputTable: The Table being used for db-struct.
+                    
 
                     .LINK
-                    
+                    https://www.postman.com/sambaengineering/developer-sambasafety-com/request/3zm54uj/obtain-a-token
+                    SambaSafety API Documentation\Authentication\Obtain a Token
                     #>
     #param (
     #
     #)
-
-    $baseUri = "https://api-demo.sambasafety.io/oauth2/v1/token"
+    # $baseUri = "https://developer.sambasafety.io"
+    $baseUri = "https://api-demo.sambasafety.io/oauth2/v1/token?grant_type=client_credentials&scope=API"
 
     $username = Read-Host "Provide a Username: "
     $password = Read-Host "Provide a Password: "
+
+    $timeZoneOffset = (Get-TimeZone).GetUtcOffset((Get-Date))
+
+    # This may be turned into a function
+    $todaysDate = Get-Date -Format "yyyy-mm-ddThh:mm:ss$($timeZoneOffset)"
 
     $encodedAuth = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($username):$($password)"))
     $tokenHeaders = @{
     "Content-Type"="application/x-www-form-urlencoded";
     "Authorization"="Basic $($encodedAuth)";
-    "Accept"="application/xml";
+    "Accept"="application/json"; # JSON is the default and Documentation doesn't indicate any other return format.
+    "X-Api-Key"="MyApiKey"
     }
+
+    $obtainToken = Invoke-WebRequest -Uri "$($baseUri)" -Headers @tokenHeaders
+    $obtainTokenResponse = $obtainToken.GetResponse()
+    $returnBody = $obtainToken.Content
+    $accessToken = $returnBody.access_token
+    Write-Host "Current Bearer Authorization Token: $($accessToken)"
+
+
+    <#
+        Subsequent API Calls will be using $accessToken for their Bearer Token
+        $tokenHeaders = @{
+    "Content-Type"="application/x-www-form-urlencoded";
+    "Authorization"="$($accessToken)";
+    "Accept"="application/json"; # JSON is the default and Documentation doesn't indicate any other return format.
+    "X-Api-Key"="MyApiKey"
+    }
+
+    #>
