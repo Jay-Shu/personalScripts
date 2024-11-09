@@ -1,4 +1,5 @@
 ! Comments in this document are with an Exclamation Point.
+! Each procedure does not include any spider-webbing this is so it can be created then within your current logic. Alternatively, live within other procedures.
 ! Each procedure MUST follow this format. On the DB Side this is stored as HEX, convert it to Base64, and it can be decrypted by Jasypt.
 ! begin-procedure name-here
 ! end-procedure name-here
@@ -15,6 +16,7 @@
 
 begin-procedure get-reorg-indexes
 begin-select
+OBJECT_ID(name) '$TABLENAME',
 avg_fragmentation_in_percent, 
        fragment_count, 
        avg_fragment_size_in_pages
@@ -31,8 +33,93 @@ end-procedure get-reorg-indexees
 
 
 begin-procedure get-rebuild-indexes
+begin-select
+OBJECT_ID(name) '$TABLENAME',
+avg_fragmentation_in_percent, 
+       fragment_count, 
+       avg_fragment_size_in_pages
+       exit-select
+FROM   sys.Dm_db_index_physical_stats(Db_id('dbName'), Object_id('tableName'), 
+       NULL, 
+              NULL, NULL) AS a 
+       INNER JOIN sys.indexes b 
+               ON a.object_id = b.object_id 
+                  AND a.index_id = b.index_id
+				WHERE avg_fragmentation_in_percent > 30
+end-select
 end-procedure get-rebuild-indexes
 
+! The prior 2 procedures are Database Population for initially creating the job.
+! Our succeeding procedures will need to use a Stored Procedure for the Rebuild, Reorg, and Statistics.
+! This is a limitation of the software.
+
+! CREATE PROCEDURE reorgTables
+! @tableName NVARCHAR(32)
+! AS
+! BEGIN TRY
+!      DECLARE @sql NVARCHAR(MAX) = N'ALTER INDEX ALL ON inuser.' + @tableName + N' REORGANIZE WITH (ONLINE=ON)',
+! @val NVARCHAR(MAX)
+!
+! EXECUTE sp_executesql @sql, N'@val NVARCHAR(MAX) OUTPUT',@val OUTPUT
+! END TRY
+! BEGIN CATCH
+! SELECT 
+!   ERROR_NUMBER() AS ErrorNumber
+!   ,ERROR_SEVERITY() AS ErrorSeverity
+!   ,ERROR_STATE() AS ErrorState
+!   ,ERROR_PROCEDURE() AS ErrorProcedure
+!   ,ERROR_LINE() AS ErrorLine
+!   ,ERROR_MESSAGE() AS ErrorMessage;
+! END CATCH
+
+! CREATE PROCEDURE rebuildTables
+! @tableName NVARCHAR(32)
+! AS
+! BEGIN TRY
+!      DECLARE @sql NVARCHAR(MAX) = N'ALTER INDEX ALL ON inuser.' + @tableName + N' REBUILD WITH (ONLINE=ON)',
+! @val NVARCHAR(MAX)
+!
+! EXECUTE sp_executesql @sql, N'@val NVARCHAR(MAX) OUTPUT',@val OUTPUT
+! END TRY
+! BEGIN CATCH
+! SELECT 
+!   ERROR_NUMBER() AS ErrorNumber
+!   ,ERROR_SEVERITY() AS ErrorSeverity
+!   ,ERROR_STATE() AS ErrorState
+!   ,ERROR_PROCEDURE() AS ErrorProcedure
+!   ,ERROR_LINE() AS ErrorLine
+!   ,ERROR_MESSAGE() AS ErrorMessage;
+! END CATCH
+
+! This procedure must be ran each time and also independently (7-day Interval)
+! CREATE PROCEDURE updateStats
+! @tableName NVARCHAR(32)
+! AS
+! BEGIN TRY
+!      DECLARE @sql NVARCHAR(MAX) = N'UPDATE STATISTICS inuser.' + @tableName + N' WITH FULLSCAN',
+! @val NVARCHAR(MAX)
+!
+! EXECUTE sp_executesql @sql, N'@val NVARCHAR(MAX) OUTPUT',@val OUTPUT
+! END TRY
+! BEGIN CATCH
+! SELECT 
+!   ERROR_NUMBER() AS ErrorNumber
+!   ,ERROR_SEVERITY() AS ErrorSeverity
+!   ,ERROR_STATE() AS ErrorState
+!   ,ERROR_PROCEDURE() AS ErrorProcedure
+!   ,ERROR_LINE() AS ErrorLine
+!   ,ERROR_MESSAGE() AS ErrorMessage;
+! END CATCH
+
+begin-procedure reorg-table
+EXECSP dbo.reorgTables ($TABLENAME)
+EXECSP dbo.updateStats ($TABLENAME)
+end-procedure reorg-table
+
+begin-procedure rebuild-table
+EXECSP dbo.rebuildTables ($TABLENAME)
+EXECSP dbo.updateStats ($TABLENAME)
+end-procedure rebuild-table
 
 begin-procedure get-document-id
 
