@@ -1,0 +1,149 @@
+{
+    "comments": {
+        // symbol used for single line comment. Remove this entry if your language does not support line comments
+        "lineComment": "!",
+        // symbols used for start and end a block comment. Remove this entry if your language does not support block comments
+        "blockComment": [
+            "!*",
+            "*!"
+        ]
+    },
+    // symbols used as brackets
+    "brackets": [
+        [
+            "{",
+            "}"
+        ],
+        [
+            "[",
+            "]"
+        ],
+        [
+            "(",
+            ")"
+        ]
+    ],
+    // symbols that are auto closed when typing
+    "autoClosingPairs": [
+        [
+            "{",
+            "}"
+        ],
+        [
+            "[",
+            "]"
+        ],
+        [
+            "(",
+            ")"
+        ],
+        [
+            "\"",
+            "\""
+        ],
+        [
+            "'",
+            "'"
+        ],
+        [
+            "begin-select",
+            "exit-select\nend-select"
+        ],
+        [
+            "begin-procedure",
+            "end-procedure"
+        ]
+    ],
+    // symbols that can be used to surround a selection
+    "surroundingPairs": [
+        [
+            "{",
+            "}"
+        ],
+        [
+            "[",
+            "]"
+        ],
+        [
+            "(",
+            ")"
+        ],
+        [
+            "\"",
+            "\""
+        ],
+        [
+            "'",
+            "'"
+        ]
+    ],
+    "folding": {
+        "markers":{
+            "start": "\\b\\s*begin-select\\s*\\b",
+            "end": "\\b\\s*end-select\\s*\\b"
+        },
+        "markers":{
+            "start": "\\b\\s*begin-dataprovider\\s*\\b",
+            "end": "\\b\\s*end-dataprovider\\s*\\b"
+        }
+    },
+    "semanticHighlighting": true,
+    "tokenColors": [
+        {
+            "scope": "keyword",
+            // This is Blue
+            "settings": {
+                "foreground": "#0000FF"
+            }
+        },
+        {
+            "scope": "string",
+            // This is Blue
+            "settings": {
+                "foreground": "#0000FF"
+            }
+        },
+        {
+            "scope": "globalVariables",
+            // This is Pink
+            "settings": {
+                "foreground": "#FF66FF"
+            }
+        },
+        {
+            "scope": "quotedstrings",
+            // This is Dark Magenta
+            "settings": {
+                "foreground": "#8B008B"
+            }
+        },
+        {
+            "scope": "pdtstringfunctions",
+            // This is Pink
+            "settings": {
+                "foreground": "#FF66FF"
+            }
+        },
+        {
+            "scope": "pdtgeneralfunctions",
+            // This is Blue
+            "settings": {
+                "foreground": "#0000FF"
+            }
+        },
+        {
+            "scope": "pdtskipfunction",
+            // This is Blue
+            "settings": {
+                "foreground": "#0000FF"
+            }
+        },
+        {
+            "scope": "pdtlockfunction",
+            // This is Pink
+            "settings": {
+                "foreground": "#FF00FF"
+            }
+        }
+    ]
+}

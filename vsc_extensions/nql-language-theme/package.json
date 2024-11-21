@@ -1,0 +1,25 @@
+{
+  "name": "nql-language-theme",
+  "displayName": "nql_language_theme",
+  "description": "For giving the ability to color the text as you would normally see within the Perceptive DataTransfer Product.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "nql",
+      "aliases": ["nolijquerylanguagetheme", "nql"],
+      "extensions": [".nql"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "nql",
+      "scopeName": "source.nql",
+      "path": "./syntaxes/nql.tmLanguage.json"
+    }]
+  }
+}

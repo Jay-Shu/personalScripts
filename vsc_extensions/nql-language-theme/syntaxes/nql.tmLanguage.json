@@ -1,0 +1,116 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "nolijquerylanguagetheme",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include":"#globalVariables"
+		},
+		{
+			"include":"#quotedstrings"
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#numbers"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#pdtstringfunctions"
+		},
+		{
+			"include": "#pdtgeneralfunctions"
+		},
+		{
+			"include": "#pdtskipfunction"
+		},
+		{
+			"include": "#pdtlockfunction"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.nql",
+				"match": "\\b(if|while|for|return)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.nql",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.nql",
+					"match": "\\\\."
+				}
+			]
+		},
+		"quotedstrings":{
+			"begin":"\\'",
+			"end":"\\'",
+			"patterns":[{
+				"name":"constant.quoted.strings.nql",
+				"match":"\\'.*\\'"
+				}]
+		},
+		"globalVariables" :{
+			"patterns":[{
+					"name":"globalVariables.color.nql",
+					"match":"\\b(\\_GL\\.BATCH\\_|\\_GL\\.DBNAME\\_|\\_GL\\.EXCEPTION\\_|\\_GL\\.FILENAME\\_|\\_GL\\.FILEPATH\\_|\\_GL\\.FILETYPE\\_|\\_GL\\.HEADER\\_.\\_GL\\.INTERACTIVE\\_|\\_GL\\.MATCH\\_|\\_GL\\.NEW\\_|\\_GL\\.RECORDNO\\_|\\_GL\\.ROWCOUNT\\_|\\_GL\\.RUNMODE\\_|\\_GL\\.SUSPEND\\_|\\_GL\\.STATUS\\_|\\_GL\\.USERID\\_)\\b"
+				}]
+		
+		},
+		"pdtstringfunctions":{
+			"patterns":[{
+				"name":"pdt.string.functions.color.nql",
+				"match":"\\b(ascii\\(|inschr\\(|length\\(|ltrim\\(|mixed\\(|mixedlt\\(|replace\\(|rtrim\\(|substr\\(|tonum\\(|trunc\\(|unstring\\(|upper\\()\\b"
+				}]
+		},
+		"pdtgeneralfunctions":{
+			"patterns":[{
+				"name":"pdt.general.functions.color.nql",
+				"match":"\\b(begin-dataprovider|end-dataprovider|CopyFile\\(|cnvdate\\(|DataProviderCall\\(|DataProviderPrompt\\(|do|ExtractBinary\\(|HobsonsUpdate\\(|ImageNowAddDoc\\(|ImageNowAddToFolder\\(|ImageNowAddToQueue\\(|ImageNowCreateFolder\\(|ImageNowUpdateNote\\(|ImageNowUpdateCustomProperty\\(|ImageNowUpdateDocumentProperty\\(|ImageNowAddStickyNote\\(|InitializeVars|InsertBinary\\(|isnull\\(|logit|lookup\\(|MoveFile\\(|NWAddDoc\\(|NWGetDoc\\(NWWorkComplete\\(PopulateTemplate\\(|prompt|skip|stop|store|toggle_off\\(|toggle_on\\(|try|catch|end-try)\\b"
+				}]
+		},
+		"pdtskipfunction":{
+			"patterns":[{
+					"name":"pdt.skip.function.color.nql",
+					"match":"\\b(NEW|MATCH|SUSPEND)\\b"
+				}]
+		},
+		"pdtlockfunction":{
+			"patterns":[{
+				"name":"pdt.lock.function.color.nql",
+				"match":"\\bSUSPEND\\b"
+				}]
+		},
+		"comments": {
+			"patterns": [{
+				"name": "comment.line.double-slash.nql",
+				"match": "//.*$"
+			}]
+		},
+		"numbers": {
+			"patterns": [{
+				"name": "constant.numeric.nql",
+				"match": "\\b\\d+(\\.\\d+)?\\b"
+			}]
+		},
+		"operators": {
+			"patterns": [{
+				"name": "keyword.operator.nql",
+				"match": "\\+|\\-|\\*|\\/|="
+			}]
+		}
+	},
+	"scopeName": "source.nql"
+}
