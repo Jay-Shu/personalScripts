@@ -322,7 +322,7 @@ function main ()
 +"<subject>ENC 1102</subject>"
 +"<number>ENC 1102</number>"
 +"<title>Composition 2</title>"
-+<repeat xsi:nil="true" />
++"<repeat xsi:nil="+'"'+"true"+'"'+" />"
 +<scoreLetter>A</scoreLetter>
 +<scorePoint xsi:nil="true" />
 +<creditsAttempted>3.00</creditsAttempted>
