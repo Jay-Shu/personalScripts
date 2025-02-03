@@ -323,123 +323,123 @@ function main ()
 +"<number>ENC 1102</number>"
 +"<title>Composition 2</title>"
 +"<repeat xsi:nil="+'"'+"true"+'"'+" />"
-+<scoreLetter>A</scoreLetter>
-+<scorePoint xsi:nil="true" />
-+<creditsAttempted>3.00</creditsAttempted>
-+<pointsEarned>12.00</pointsEarned>
-+</course>
-+</universityCourseRecords>
-+<universityCourseRecords xmlns="">
-+<term>SPRING 2019</term>
-+<year xsi:nil="true" />
-+<dateCompleted xsi:nil="true" />
-+<course>
-+<subject>REL 2300</subject>
-+<number>REL 2300</number>
-+<title>World Religions</title>
-+<repeat xsi:nil="true" />
-+<scoreLetter>B</scoreLetter>
-+<scorePoint xsi:nil="true" />
-+<creditsAttempted>3.00</creditsAttempted>
-+<pointsEarned>9.00</pointsEarned>
-+</course>
-+<course>
-+<subject>MAC 1105</subject>
-+<number>MAC 1105</number>
-+<title>College Algebra</title>
-+<repeat xsi:nil="true" />
-+<scoreLetter>B</scoreLetter>
-+<scorePoint xsi:nil="true" />
-+<creditsAttempted>3.00</creditsAttempted>
-+<pointsEarned>9.00</pointsEarned>
-+</course>
-+<course>
-+<subject>HUM 1020</subject>
-+<number>HUM 1020</number>
-+<title>Introduction to the Hum</title>
-+<repeat xsi:nil="true" />
-+<scoreLetter>A</scoreLetter>
-+<scorePoint xsi:nil="true" />
-+<creditsAttempted>3.00</creditsAttempted>
-+<pointsEarned>12.00</pointsEarned>
-+</course>
-+</universityCourseRecords>
-+<universityCourseRecords xmlns="">
-+<term>SUMMER 2019</term>
-+<year xsi:nil="true" />
-+<dateCompleted xsi:nil="true" />
-+<course>
-+<subject>ISS 2200</subject>
-+<number>ISS 2200</number>
-+<title>Intro to International</title>
-+<repeat xsi:nil="true" />
-+<scoreLetter>A</scoreLetter>
-+<scorePoint xsi:nil="true" />
-+<creditsAttempted>3.00</creditsAttempted>
-+<pointsEarned>12.00</pointsEarned>
-+</course>
-+<course>
-+<subject>MAC 1140</subject>
-+<number>MAC 1140</number>
-+<title>Precalculus Algebra</title>
-+<repeat xsi:nil="true" />
-+<scoreLetter>C</scoreLetter>
-+<scorePoint xsi:nil="true" />
-+<creditsAttempted>3.00</creditsAttempted>
-+<pointsEarned>6.00</pointsEarned>
-+</course>
-+</universityCourseRecords>
-+<universityCourseRecords xmlns="">
-+<term>FALL 2019</term>
-+<year xsi:nil="true" />
-+<dateCompleted xsi:nil="true" />
-+<course>
-+<subject>MCB 2010</subject>
-+<number>MCB 2010</number>
-+<title>Microbiology for Hlth S</title>
-+<repeat xsi:nil="true" />
-+<scoreLetter>A</scoreLetter>
-+<scorePoint xsi:nil="true" />
-+<creditsAttempted>4.00</creditsAttempted>
-+<pointsEarned>16.00</pointsEarned>
-+</course>
-+<course>
-+<subject>HSC 1000</subject>
-+<number>HSC 1000</number>
-+<title>Introduction to Healthc</title>
-+<repeat xsi:nil="true" />
-+<scoreLetter>A</scoreLetter>
-+<scorePoint xsi:nil="true" />
-+<creditsAttempted>3.00</creditsAttempted>
-+<pointsEarned>12.00</pointsEarned>
-+</course>
-+</universityCourseRecords>
-+<universityCourseRecords xmlns="">
-+<term>SPRING 2020</term>
-+<year xsi:nil="true" />
-+<dateCompleted xsi:nil="true" />
-+<course>
-+<subject>HSA 3502</subject>
-+<number>HSA 3502</number>
-+<title>Healthcare Risk Managem</title>
-+<repeat xsi:nil="true" />
-+<scoreLetter>W</scoreLetter>
-+<scorePoint xsi:nil="true" />
-+<creditsAttempted>0.00</creditsAttempted>
-+<pointsEarned>0.00</pointsEarned>
-+</course>
-+<course>
-+<subject>ENC 3241</subject>
-+<number>ENC 3241</number>
-+<title>Technical Writing for P</title>
-+<repeat xsi:nil="true" />
-+<scoreLetter>W</scoreLetter>
-+<scorePoint xsi:nil="true" />
-+<creditsAttempted>0.00</creditsAttempted>
-+<pointsEarned>0.00</pointsEarned>
-+</course>
-+</universityCourseRecords>
-+</bwout:transcript>
++"<scoreLetter>A</scoreLetter>"
++"<scorePoint xsi:nil="+'"'+"true"+'"'+" />"
++"<creditsAttempted>3.00</creditsAttempted>"
++"<pointsEarned>12.00</pointsEarned>"
++"</course>"
++"</universityCourseRecords>"
++"<universityCourseRecords xmlns="+'""'+">"
++"<term>SPRING 2019</term>"
++"<year xsi:nil="+'"'+"true"+'"'+" />"
++"<dateCompleted xsi:nil="+'"'+"true"+'"'+" />"
++"<course>"
++"<subject>REL 2300</subject>"
++"<number>REL 2300</number>"
++"<title>World Religions</title>"
++"<repeat xsi:nil="+'"'+"true"+" />"
++"<scoreLetter>B</scoreLetter>"
++"<scorePoint xsi:nil="+'"'+"true"+'"'+" />"
++"<creditsAttempted>3.00</creditsAttempted>"
++"<pointsEarned>9.00</pointsEarned>"
++"</course>"
++"<course>"
++"<subject>MAC 1105</subject>"
++"<number>MAC 1105</number>"
++"<title>College Algebra</title>"
++"<repeat xsi:nil="+'"'+"true"+" />"
++"<scoreLetter>B</scoreLetter>"
++"<scorePoint xsi:nil="+'"'+"true"+'"'+" />"
++"<creditsAttempted>3.00</creditsAttempted>"
++"<pointsEarned>9.00</pointsEarned>"
++"</course>"
++"<course>"
++"<subject>HUM 1020</subject>"
++"<number>HUM 1020</number>"
++"<title>Introduction to the Hum</title>"
++"<repeat xsi:nil="+'"'+"true"+'"'+" />"
++"<scoreLetter>A</scoreLetter>"
++"<scorePoint xsi:nil="+'"'+"true"+" />"
++"<creditsAttempted>3.00</creditsAttempted>"
++"<pointsEarned>12.00</pointsEarned>"
++"</course>"
++"</universityCourseRecords>"
++"<universityCourseRecords xmlns="+'""'+">"
++"<term>SUMMER 2019</term>"
++"<year xsi:nil="+'"'+"true"+'"'+" />"
++"<dateCompleted xsi:nil="+'"'+"true"+'"'+" />"
++"<course>"
++"<subject>ISS 2200</subject>"
++"<number>ISS 2200</number>"
++"<title>Intro to International</title>"
++"<repeat xsi:nil="+'"'+"true"+'"'+" />"
++"<scoreLetter>A</scoreLetter>"
++"<scorePoint xsi:nil="+'"'+"true"+'"'+" />"
++"<creditsAttempted>3.00</creditsAttempted>"
++"<pointsEarned>12.00</pointsEarned>"
++"</course>"
++"<course>"
++"<subject>MAC 1140</subject>"
++"<number>MAC 1140</number>"
++"<title>Precalculus Algebra</title>"
++"<repeat xsi:nil="+'"'+"true"+'"'+" />"
++"<scoreLetter>C</scoreLetter>"
++"<scorePoint xsi:nil="+'"'+"true"+'"'+" />"
++"<creditsAttempted>3.00</creditsAttempted>"
++"<pointsEarned>6.00</pointsEarned>"
++"</course>"
++"</universityCourseRecords>"
++"<universityCourseRecords xmlns="+'""'+">"
++"<term>FALL 2019</term>"
++"<year xsi:nil="+'"'+"true"+'"'+" />"
++"<dateCompleted xsi:nil="+'"'+"true"+'"'+" />"
++"<course>"
++"<subject>MCB 2010</subject>"
++"<number>MCB 2010</number>"
++"<title>Microbiology for Hlth S</title>"
++"<repeat xsi:nil="+'"'+"true"+'"'+" />"
++"<scoreLetter>A</scoreLetter>"
++"<scorePoint xsi:nil="+'"'+"true"+'"'+" />"
++"<creditsAttempted>4.00</creditsAttempted>"
++"<pointsEarned>16.00</pointsEarned>"
++"</course>"
++"<course>"
++"<subject>HSC 1000</subject>"
++"<number>HSC 1000</number>"
++"<title>Introduction to Healthc</title>"
++"<repeat xsi:nil="+'"'+"true"+'"'+" />"
++"<scoreLetter>A</scoreLetter>"
++"<scorePoint xsi:nil="+'"'+"true"+'"'+" />"
++"<creditsAttempted>3.00</creditsAttempted>"
++"<pointsEarned>12.00</pointsEarned>"
++"</course>"
++"</universityCourseRecords>"
++"<universityCourseRecords xmlns="+'""'+">"
++"<term>SPRING 2020</term>"
++"<year xsi:nil="+'"'+"true"+'"'+" />"
++"<dateCompleted xsi:nil="+'"'+"true"+'"'+" />"
++"<course>"
++"<subject>HSA 3502</subject>"
++"<number>HSA 3502</number>"
++"<title>Healthcare Risk Managem</title>"
++"<repeat xsi:nil="+'"'+"true"+'"'+" />"
++"<scoreLetter>W</scoreLetter>"
++"<scorePoint xsi:nil="+'"'+"true"+'"'+" />"
++"<creditsAttempted>0.00</creditsAttempted>"
++"<pointsEarned>0.00</pointsEarned>"
++"</course>"
++"<course>"
++"<subject>ENC 3241</subject>"
++"<number>ENC 3241</number>"
++"<title>Technical Writing for P</title>"
++"<repeat xsi:nil="+'"'+"true"+'"'+" />"
++"<scoreLetter>W</scoreLetter>"
++"<scorePoint xsi:nil="+'"'+"true"+'"'+" />"
++"<creditsAttempted>0.00</creditsAttempted>"
++"<pointsEarned>0.00</pointsEarned>"
++"</course>"
++"</universityCourseRecords>"
++"</bwout:transcript>";
         //headers.push(props);
         
         request.addHeaders(headers);

@@ -2,6 +2,7 @@
 
     Execution Method:
         This script is designed to be run as a... action.
+        Missing original comment block.
 */
 
 #if defined(imagenowDir6)
@@ -78,8 +79,16 @@ function main ()
             "document-notes"=doc.keywords
             // There are more headers here, they are just not present.
             ];
-
-        headers.push(props);
+            if (props)
+        {
+            for (var i=0; i<props.length; i++)
+            {
+                var docProps = [
+                    props[i].name=props[i].value
+                ]
+                headers.push(docProps);
+            }
+        };
         
         request.addHeaders(headers);
 
@@ -93,15 +102,16 @@ function main ()
         var response = client.sendRequest(request);
 
         var responseHeaders = response.getHeaders();
+        var statusCode = response.getStatusCode();
 
-            if(response.getStatusCode() != 200)
+            if(statusCode != 200)
             {
 
             } else {
 
-            }
+            };
 
-        debug.logAlways("INFO",)
+        debug.logAlways("INFO","The following status code was received: %s \n",statusCode);
         // We need to supply all the relevant metadata; Drawer, Field 1, Field 2, Field 3, Field 4, Field 5, Doc Type, 
     } catch {
         // In the event an error arises.
@@ -119,7 +129,7 @@ function printDate() {
     const temp = new Date();
     const pad = (i) => (i < 10) ? "0" + i : "" + i;
     
-    // .LINK
+    // .LINK - Powershell Notation.
     // https://stackoverflow.com/questions/5914020/javascript-date-to-string
 
     return temp.getFullYear() +

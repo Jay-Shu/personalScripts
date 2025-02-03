@@ -1,6 +1,8 @@
 /*
     Serialization and Deserialization to protect yourself from injections. But we also need to consider cases such as O'Connell and {Bob }
     Since I don't know how the information is being shipped this is generalized version.
+
+    DISCLAIMER: Another user provided the answer of Temporal Tables, that supersedes this.
 */
 
 CREATE TABLE myexample

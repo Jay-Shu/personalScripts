@@ -23,9 +23,13 @@
         2024-03-22: Added in additional Notes for OpenSSL Testing for s_client and s_server.
 		2024-07-14: Added in retrieval of OS Version. Refer to Citations.
 		2024-07-14: Added in Legacy options for Windows Server 2012 and older versions. This is an issue with OpenSSL 3.x
-			and not OpenSSL 1.x. Specifically "-keypbe PBE-SHA1-3DES -certpbe PBE-SHA1-3DES"
+			and not OpenSSL 1.x. Specifically "-keypbe PBE-SHA1-3DES -certpbe PBE-SHA1-3DES" is needed to maintain
+            compatibility with older systems such as Windows Server 2012.
 		2024-07-14: Added in logic for running with or without legacy options in OpenSSL.
         2024-08-07: Removed previous default comments.
+        2025-01-07: TARGETDIR argument added to msiexec for OpenSSL installation.
+        2025-01-07: Added $env:Path += "E:\OpenSSL" for executing the script.
+        2025-01-10: Added missing /i switch for the msiexec. Added V to /L* switch. Added /norestart switch.
 
     TO DO:
         N/A - No current modification requests pending.
@@ -45,7 +49,7 @@
     WARNING: Do not have trailing spaces in front or behind of any "<string>" for the "-subj" argument
         this will cause it to fail.
 
-    Variables:
+    .INPUTS
         checkHomeDrive; This variable is checking the HOMEDRIVE of the User. If the HOMEDRIVE is a
             Network drive, then it will be updated to a local location. A similar action applies to
             RabbitMQ as well (You cannot install RabbitMQ with an account that has a Network
@@ -115,11 +119,17 @@
 		build: This variable is the build associated with the release.
 		buildNumber: This variable is the revision number associated with the release.
 		
-		
-		
-	Citations:
-		1. Use Powershell to Find Operating System Version, https://devblogs.microsoft.com/scripting/use-powershell-to-find-operating-system-version/
-		2. Operating System Version, https://learn.microsoft.com/en-us/windows/win32/sysinfo/operating-system-version
+		.LINK
+            https://devblogs.microsoft.com/scripting/use-powershell-to-find-operating-system-version/
+            Use Powershell to Find Operating System Version
+
+        .LINK
+            https://learn.microsoft.com/en-us/windows/win32/sysinfo/operating-system-version
+            Operating System Version
+
+        .LINK
+        https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec
+        msiexec
 #>
 
 <#
@@ -157,9 +167,9 @@ Add-Type -MemberDefinition $signature -Name "Win32OSVersion" -Namespace Win32Fun
 
 $os = [System.BitConverter]::GetBytes((Get-OSVersion)::GetVersion())
 $majorVersion = $os[0]
-$minorVersion = $os[1]
-$build = [byte]$os[2],[byte]$os[3]
-$buildNumber = [System.BitConverter]::ToInt16($build,0)
+#$minorVersion = $os[1]
+#$build = [byte]$os[2],[byte]$os[3]
+#$buildNumber = [System.BitConverter]::ToInt16($build,0)
 
 # We need to know if our Operating system requires legacy algorithms
 
@@ -730,7 +740,8 @@ if($globalVars.useSubjectAltName -ne $true ) {
 } else {
     if ($globalVars.download) {
         Invoke-WebRequest -Uri "https://slproweb.com/download/Win64OpenSSL-3_2_1.msi" -Outfile "E:\opensslInstallation\Win64OpenSSL-3_2_1.msi"
-        msiexec.exe "E:\opensslInstallation\Win64OpenSSL-3_2_1.msi" /QN /L* "C:\msilog.txt" ALLUSERS = 1
+        msiexec.exe /i "E:\opensslInstallation\Win64OpenSSL-3_2_1.msi" /QN /L*V "C:\msilog.txt" ALLUSERS = 1 TARGETDIR="E:\OpenSSL" /norestart
+        $env:Path += "E:\OpenSSL"
     }
     <#
     For this section we need to create the directories
